@@ -1,11 +1,11 @@
+import 'bootstrap/dist/css/bootstrap.css'
 import '@/styles/globals.css'
-import { init } from '@noriginmedia/norigin-spatial-navigation';
-
-init({
-  debug: false,
-  visualDebug: false
-});
+import { useEffect } from 'react';
 
 export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+	useEffect(() => {
+		import('bootstrap/dist/js/bootstrap');
+	}, []);
+
+	return <Component {...pageProps} />
 }
