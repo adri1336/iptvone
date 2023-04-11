@@ -1,0 +1,35 @@
+.keyboard {
+    background-color: #636363;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.keyboardrow {
+    display: flex;
+    flex-direction: row;
+}
+
+.key {
+    font-weight: bold;
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+    flex: 1;
+    user-select: none;
+}
+
+.key:hover {
+    background-color: whitesmoke;
+    border-radius: 5px;
+    color: #1e1e1e;
+    opacity: 0.5;
+}
+
+.focusedkey {
+    background-color: whitesmoke;
+    border-radius: 5px;
+    color: #1e1e1e;
+}

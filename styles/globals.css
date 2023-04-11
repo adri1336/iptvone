@@ -1,7 +1,130 @@
-.button {
-	background-color: #0f0;
+/* Global */
+* {
+	color: whitesmoke;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.button-focused {
-	background-color: #f00;
+.page {
+	background-color: #454545;
+	min-width: 100vw;
+	min-height: 100vh;
+}
+
+a {
+	all: unset;
+}
+
+a:hover{
+	text-decoration: none;
+	color: inherit;
+	opacity: 0.85;
+}
+
+a > span:not(.material-icons):hover {
+	opacity: 0.85;
+}
+
+.title-big {
+	font-size: 38pt;
+}
+
+.title-medium {
+	font-size: 26pt;
+}
+
+.title-small {
+	font-size: 22pt;
+}
+
+.text-big {
+	font-size: 18pt;
+}
+
+.text-medium {
+	font-size: 14pt;
+}
+
+.text-small {
+	font-size: 10pt;
+}
+
+.m-100 {
+	margin: 100px !important;
+}
+
+.m-50 {
+	margin: 50px !important;
+}
+
+.m-30 {
+	margin: 30px !important;
+}
+
+.m-10 {
+	margin: 10px !important;
+}
+
+.mt-40 {
+	margin-top: 40px !important;
+}
+
+.mb-40 {
+	margin-bottom: 40px !important;
+}
+
+.mt-20 {
+	margin-top: 20px !important;
+}
+
+.mb-20 {
+	margin-bottom: 20px !important;
+}
+
+.mb-30 {
+	margin-bottom: 30px !important;
+}
+
+.mt-10 {
+	margin-top: 10px !important;
+}
+
+.mb-10 {
+	margin-bottom: 10px !important;
+}
+
+.ml-10 {
+	margin-left: 10px !important;
+}
+
+.mr-10 {
+	margin-right: 10px !important;
+}
+
+.pl-30 {
+	padding-left: 30px;
+}
+
+.p-10 {
+	padding: 10px;
+}
+
+.p-30 {
+	padding: 30px;
+}
+
+button {
+	all: unset;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.cursor-pointer:hover {
+	opacity: 0.75;
+}
+
+.border-box {
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
 }

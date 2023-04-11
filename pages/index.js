@@ -1,9 +1,11 @@
+import Keyboard from "@/components/keyboard";
 import {
   init,
   useFocusable,
   FocusContext
 } from "@noriginmedia/norigin-spatial-navigation";
 import { useEffect } from "react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export function Header({ name1 }) {
   const { ref, focused } = useFocusable({});
@@ -16,26 +18,27 @@ export function Header({ name1 }) {
 
 
 export default () => {
-  init({});
-  const { ref, focusKey, setFocus, focusSelf } = useFocusable({
-    isFocusBoundary: true
-  });
-  useEffect(() => {
-    focusSelf();
-  }, [focusSelf]);
+	init({});
 
-  return (
-    <div className="parentClass">
-      <FocusContext.Provider value={focusKey}>
-        <div className="parentClass" ref={ref}>
-          <Header name1="One" />
-          <Header name1="Two" />
-          <Header name1="Three" />
-          <Header name1="Four" />
-          <Header name1="Five" />
-          {/* <Footer name1="Six" /> */}
-        </div>
-      </FocusContext.Provider>
-    </div>
-  );
+	const { ref, focusKey, setFocus, focusSelf } = useFocusable({
+		isFocusBoundary: true
+	});
+	useEffect(() => {
+		focusSelf();
+	}, [focusSelf]);
+
+	return (
+		<div className="page d-flex flex-column justify-content-center align-items-center">
+			<span className="title-big fw-bold">IPTV One</span>
+			<Keyboard onKeyPressed={ (keyId, keyText) => console.log("keyId: " + keyId + " keyText: " + keyText) }/>
+		</div>
+	);
+}
+
+export async function getStaticProps({ locale }) {
+	return {
+		props: {
+			...(await serverSideTranslations(locale, ['common']))
+		}
+	};
 }

@@ -1,0 +1,9 @@
+{
+    "COMPONENTS": {
+        "KEYBOARD": {
+            "SPACE": "Espacio",
+            "BACKSPACE": "Retroceso",
+            "CLEAR": "Limpiar"
+        }
+    }
+}
