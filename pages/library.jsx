@@ -19,10 +19,15 @@ export default () => {
 
     if(playItem) {
         console.log(playItem);
-        return <div className="page">
-            <video >
-                
-            </video>
+        const url = playItem.url.replace('/ts', '/m3u8');
+        return <div className="page d-flex flex-column">
+            <video
+                width={ 800 }
+                height={ 600 }
+                controls
+                autoPlay
+                src={ url }
+            />
         </div>
     }
     else {
