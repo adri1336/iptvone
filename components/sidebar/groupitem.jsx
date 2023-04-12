@@ -6,7 +6,7 @@ const GroupItem = ({ name, selected, onSelected }) => {
         onEnterPress: () => onSelected()
     });
 
-    return <li ref={ ref } className={ styles.li + " text-medium" + (selected ? " " + styles.liselected : "") + (focused ? " " + styles.lifocused : "")} onClick={ () => onSelected() }>{ name }</li>;
+    return <li ref={ ref } className={ styles.li + (selected ? " " + styles.liselected : "") + (focused ? " " + styles.lifocused : "")} onClick={ () => onSelected() }>{ name }</li>;
 };
 
 export default GroupItem;

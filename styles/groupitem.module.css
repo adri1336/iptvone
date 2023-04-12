@@ -2,9 +2,9 @@
     all: unset;
     display: inline-block;
     cursor: pointer;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    white-space: nowrap;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 10pt;
 }
 
 .lifocused,

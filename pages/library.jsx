@@ -3,7 +3,7 @@ import IPTV from "@/utils/iptv";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useEffect, useState } from "react";
 import { useTranslation } from 'next-i18next';
-import Item from "@/components/sidebar/item";
+import Item from "@/components/item";
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
 
 export default () => {
