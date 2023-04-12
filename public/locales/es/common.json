@@ -11,5 +11,10 @@
     "COMMON": {
         "M3U_URL": "URL de la lista M3U",
         "CONTINUE": "Continuar"
+    },
+    "PAGES": {
+        "M3U": {
+            "LOAD_MESSAGE": "Estamos comprobando si ya tienes una lista M3U cargada..."
+        }
     }
 }

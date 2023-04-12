@@ -3,6 +3,7 @@ import '@/styles/globals.css'
 import { useEffect } from 'react';
 import { appWithTranslation } from 'next-i18next';
 import { init } from "@noriginmedia/norigin-spatial-navigation";
+import Loader from "@/components/loader/loaderContainer";
 
 const App = ({ Component, pageProps }) => {
 	init({});
@@ -11,7 +12,10 @@ const App = ({ Component, pageProps }) => {
 		import('bootstrap/dist/js/bootstrap');
 	}, []);
 
-	return <Component {...pageProps} />
+	return <>
+		<Loader/>
+		<Component {...pageProps} />
+	</>;
 }
 
 export default appWithTranslation(App)

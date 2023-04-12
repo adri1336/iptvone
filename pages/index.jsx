@@ -7,10 +7,15 @@ import { useRef } from "react";
 import Input from "@/components/input";
 import Button from "@/components/button";
 import { useTranslation } from 'next-i18next';
+import { loader } from "@/components/loader/loader";
 
 export default () => {
 	const { t } = useTranslation('common');
 	const { focusKey, focusSelf } = useFocusable({});
+
+	useEffect(() => {
+		loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });
+	}, []);
 
     useEffect(() => {
         focusSelf();
@@ -25,12 +30,16 @@ export default () => {
 		setActiveRef(inputUrlRef);
 	}, [inputUrlRef]);
 
+	const handleSubmit = (e) => {
+		e.preventDefault();
+	};
+
 	return (<FocusContext.Provider value={ focusKey }>
 		<div className="page d-flex flex-column justify-content-center align-items-center">
-			<span className="text-medium fw-bold m-30">{ ENV.APP_NAME }</span>
+			<span className="title-small fw-bold m-30">{ ENV.APP_NAME }</span>
 			<div className="d-flex flex-row">
 				<div className="m-30"><Keyboard forRef={ activeRef } onFocus={ () => setKeyboardFocused(true) } onBlur={ () => setKeyboardFocused(false) }/></div>
-				<form className="m-30" style={{ width: 300 }}>
+				<form className="m-30" style={{ width: 300 }} onSubmit={ handleSubmit }>
 					<div className="form-group">
 						<Input iref={ inputUrlRef } type="url" className={ "dark-input" + " " + ((activeRef === inputUrlRef && keyboardFocused) ? "dark-input-focused" : "") } id="m3u" placeholder={ t('COMMON.M3U_URL') }/>
 					</div>
