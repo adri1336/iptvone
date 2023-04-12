@@ -3,7 +3,13 @@
         "KEYBOARD": {
             "SPACE": "Espacio",
             "BACKSPACE": "Retroceso",
-            "CLEAR": "Limpiar"
+            "CLEAR": "Limpiar",
+            "BACK": "Atrás",
+            "ENTER": "Entrar"
         }
+    },
+    "COMMON": {
+        "M3U_URL": "URL de la lista M3U",
+        "CONTINUE": "Continuar"
     }
 }

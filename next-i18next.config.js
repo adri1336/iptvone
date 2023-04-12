@@ -9,5 +9,5 @@ module.exports = {
             ? require('path').resolve('./public/locales')
             : '/locales',
 
-    reloadOnPrerender: false
+    reloadOnPrerender: process.env.NODE_ENV === 'development'
 }

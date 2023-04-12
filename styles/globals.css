@@ -128,3 +128,35 @@ button {
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 5px;
 }
+
+.dark-input {
+	all: unset;
+	background-color: #636363;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
+	padding: 10px;
+	width: 100%;
+	margin: 10px;
+}
+
+.dark-input-focused,
+.dark-input:focus {
+    border: 2px solid whitesmoke;
+}
+
+.dark-button {
+	all: unset;
+	background-color: #636363;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
+	padding: 10px;
+	width: 100%;
+	margin: 10px;
+	text-align: center;
+}
+
+.dark-button-focused,
+.dark-button:hover,
+.dark-button:focus {
+	border: 2px solid whitesmoke;
+}
