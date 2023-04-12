@@ -22,8 +22,8 @@ const Loader = () => {
   else document.activeElement.blur();
 
   return (
-      <div className={ styles.loaderContainer } style={{ backgroundColor: 'rgba(53, 53, 53, ' + (options?.opacity || 0.6) + ')' }}>
-        { <span className={ styles.logo + " title-small fw-bold" }>{ ENV.APP_NAME }</span> }
+      <div className={ styles.loaderContainer } style={{ backgroundColor: 'rgba(32, 32, 32, ' + (options?.opacity || 0.6) + ')' }}>
+        { options?.logo && <span className={ styles.logo + " title-small fw-bold" }>{ ENV.APP_NAME }</span> }
         <div className={ styles.loader }>
           <div className="d-flex flex-column align-items-center justify-content-center" style={{ width: '700px', height: '200px' }}>
             <Oval width={ 80 } height={ 80 } color='#c4c4c4' secondaryColor='#454545'/>

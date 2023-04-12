@@ -15,6 +15,14 @@ export default () => {
 
 	useEffect(() => {
 		loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });
+
+		if(typeof window !== 'undefined'){
+			const URL = localStorage.getItem('M3U_URL');
+			if(URL) {
+				console.log("URL: ", URL);
+			}
+			else loader(false);
+	   }
 	}, []);
 
     useEffect(() => {
@@ -32,6 +40,8 @@ export default () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		loader(true);
+		localStorage.setItem('M3U_URL', inputUrlRef.current.value);
 	};
 
 	return (<FocusContext.Provider value={ focusKey }>
