@@ -1,0 +1,11 @@
+.sidebarContainer {
+    width: 500px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 30px;
+    background-color: #525252;
+    overflow: auto;
+    overflow-x: hidden;
+}

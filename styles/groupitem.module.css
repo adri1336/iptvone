@@ -1,0 +1,18 @@
+.li {
+    all: unset;
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    white-space: nowrap;
+}
+
+.lifocused,
+.li:hover {
+    font-weight: bold;
+}
+
+.liselected {
+    font-weight: bold;
+    border-bottom: 2px solid white;
+}

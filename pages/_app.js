@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { appWithTranslation } from 'next-i18next';
 import { init } from "@noriginmedia/norigin-spatial-navigation";
 import Loader from "@/components/loader/loaderContainer";
+import { ToastContainer } from 'react-toastify';
 
 const App = ({ Component, pageProps }) => {
 	init({});
@@ -15,6 +16,7 @@ const App = ({ Component, pageProps }) => {
 	return <>
 		<Loader/>
 		<Component {...pageProps} />
+		<ToastContainer/>
 	</>;
 }
 

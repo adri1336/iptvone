@@ -8,21 +8,52 @@ import Input from "@/components/input";
 import Button from "@/components/button";
 import { useTranslation } from 'next-i18next';
 import { loader } from "@/components/loader/loader";
+import { toast } from 'react-toastify';
+import parser from "iptv-playlist-parser";
+import IPTV from "@/utils/iptv";
+import Router from "next/router";
 
 export default () => {
 	const { t } = useTranslation('common');
 	const { focusKey, focusSelf } = useFocusable({});
 
 	useEffect(() => {
-		loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });
+		(async () => {
+			loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });
 
-		if(typeof window !== 'undefined'){
-			const URL = localStorage.getItem('M3U_URL');
-			if(URL) {
-				console.log("URL: ", URL);
+			if(typeof window !== 'undefined'){
+				const URL = localStorage.getItem('M3U_URL');
+				if(URL) {
+					const res = await fetch(URL);
+					if(res.ok) {
+						//convertir la lista de canales a json
+						const m3u = await res.text();
+						const list = parser.parse(m3u);
+						
+						//extraer todos los grupos de la lista de canales
+						let groups = [];
+						list.items.forEach(item => {
+							if(item?.group?.title && !groups.includes(item.group.title))
+							groups.push(item.group.title);
+						});
+
+						//establecer los grupos y los canales
+						IPTV.setURL(URL);
+						IPTV.setGroups(groups);
+						IPTV.setItems(list.items);
+
+						//redireccionar a la página de canales
+						loader(false);
+						Router.replace( "/library");
+					}
+					else {
+						loader(false);
+						toast.error(t('PAGES.M3U.LOAD_ERROR'));
+					}
+				}
+				else loader(false);
 			}
-			else loader(false);
-	   }
+		})();
 	}, []);
 
     useEffect(() => {
@@ -46,7 +77,8 @@ export default () => {
 
 	return (<FocusContext.Provider value={ focusKey }>
 		<div className="page d-flex flex-column justify-content-center align-items-center">
-			<span className="title-small fw-bold m-30">{ ENV.APP_NAME }</span>
+			<span className="title-small fw-bold">{ ENV.APP_NAME }</span>
+			<span className="text-small fw-bold mb-30">{ ENV.APP_VERSION }</span>
 			<div className="d-flex flex-row">
 				<div className="m-30"><Keyboard forRef={ activeRef } onFocus={ () => setKeyboardFocused(true) } onBlur={ () => setKeyboardFocused(false) }/></div>
 				<form className="m-30" style={{ width: 300 }} onSubmit={ handleSubmit }>

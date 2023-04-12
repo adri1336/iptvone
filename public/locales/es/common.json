@@ -10,11 +10,16 @@
     },
     "COMMON": {
         "M3U_URL": "URL de la lista M3U",
-        "CONTINUE": "Continuar"
+        "CONTINUE": "Continuar",
+        "URL": "URL"
     },
     "PAGES": {
         "M3U": {
-            "LOAD_MESSAGE": "Estamos comprobando si ya tienes una lista M3U cargada..."
+            "LOAD_MESSAGE": "Estamos comprobando si ya tienes una lista M3U cargada...",
+            "LOAD_ERROR": "No se ha podido cargar la lista M3U."
+        },
+        "LIBRARY": {
+            "SELECT_GROUP": "Selecciona un grupo"
         }
     }
 }

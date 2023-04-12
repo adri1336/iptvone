@@ -10,6 +10,13 @@
 	min-height: 100vh;
 }
 
+.mpage {
+	margin: 20px;
+	margin-left: 520px;
+	width: 100%;
+	display: flex;
+}
+
 a {
 	all: unset;
 }
@@ -159,4 +166,8 @@ button {
 .dark-button:hover,
 .dark-button:focus {
 	border: 2px solid whitesmoke;
+}
+
+ul {
+	all: unset;
 }
