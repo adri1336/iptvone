@@ -9,10 +9,10 @@
 
 .lifocused,
 .li:hover {
-    font-weight: bold;
+    border-bottom: 1px solid whitesmoke;
 }
 
 .liselected {
     font-weight: bold;
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid whitesmoke;
 }

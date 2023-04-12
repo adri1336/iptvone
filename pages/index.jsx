@@ -17,43 +17,42 @@ export default () => {
 	const { t } = useTranslation('common');
 	const { focusKey, focusSelf } = useFocusable({});
 
+	const loadPlaylist = async url => {
+		const res = await fetch(url);
+		if(res.ok) {
+			//convertir la lista de canales a json
+			const m3u = await res.text();
+			const list = parser.parse(m3u);
+			
+			//extraer todos los grupos de la lista de canales
+			let groups = [];
+			list.items.forEach(item => {
+				if(item?.group?.title && !groups.includes(item.group.title))
+				groups.push(item.group.title);
+			});
+
+			//establecer los grupos y los canales
+			IPTV.setURL(URL);
+			IPTV.setGroups(groups);
+			IPTV.setItems(list.items);
+
+			//redireccionar a la página de canales
+			loader(false);
+			Router.replace( "/library");
+		}
+		else {
+			loader(false);
+			toast.error(t('PAGES.M3U.LOAD_ERROR'));
+		}
+	};
+
 	useEffect(() => {
-		(async () => {
+		if(typeof window !== 'undefined'){
 			loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });
-
-			if(typeof window !== 'undefined'){
-				const URL = localStorage.getItem('M3U_URL');
-				if(URL) {
-					const res = await fetch(URL);
-					if(res.ok) {
-						//convertir la lista de canales a json
-						const m3u = await res.text();
-						const list = parser.parse(m3u);
-						
-						//extraer todos los grupos de la lista de canales
-						let groups = [];
-						list.items.forEach(item => {
-							if(item?.group?.title && !groups.includes(item.group.title))
-							groups.push(item.group.title);
-						});
-
-						//establecer los grupos y los canales
-						IPTV.setURL(URL);
-						IPTV.setGroups(groups);
-						IPTV.setItems(list.items);
-
-						//redireccionar a la página de canales
-						loader(false);
-						Router.replace( "/library");
-					}
-					else {
-						loader(false);
-						toast.error(t('PAGES.M3U.LOAD_ERROR'));
-					}
-				}
-				else loader(false);
-			}
-		})();
+			const URL = localStorage.getItem('M3U_URL');
+			if(URL) loadPlaylist(URL);
+			else loader(false);
+		}
 	}, []);
 
     useEffect(() => {
@@ -72,7 +71,9 @@ export default () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		loader(true);
-		localStorage.setItem('M3U_URL', inputUrlRef.current.value);
+		const url = inputUrlRef.current.value;
+		localStorage.setItem('M3U_URL', url);
+		loadPlaylist(url);
 	};
 
 	return (<FocusContext.Provider value={ focusKey }>

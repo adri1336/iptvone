@@ -4,7 +4,8 @@ import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 
 const Item = ({ item, onSelected }) => {
     const { ref, focused } = useFocusable({
-        onEnterPress: () => onSelected()
+        onEnterPress: () => onSelected(),
+        onFocus: () => ref?.current && ref.current.scrollIntoView({ behavior: "smooth", block: "center" })
     });
 
     const raw = item.raw;
