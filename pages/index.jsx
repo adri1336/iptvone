@@ -17,6 +17,11 @@ export default () => {
 	const { t } = useTranslation('common');
 	const { focusKey, focusSelf } = useFocusable({});
 
+	const [ keyboardFocused, setKeyboardFocused ] = useState(false);
+	const [ activeRef, setActiveRef ] = useState(null);
+	const [ inputUrlValue, setInputUrlValue ] = useState('');
+	const inputUrlRef = useRef();
+
 	const loadPlaylist = async url => {
 		const res = await fetch(url);
 		if(res.ok) {
@@ -51,17 +56,16 @@ export default () => {
 			loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });
 			const URL = localStorage.getItem('M3U_URL');
 			if(URL) loadPlaylist(URL);
-			else loader(false);
+			else {
+				setInputUrlValue(URL);
+				loader(false);
+			}
 		}
 	}, []);
 
     useEffect(() => {
         focusSelf();
     }, [focusSelf]);
-
-	const [ keyboardFocused, setKeyboardFocused ] = useState(false);
-	const [ activeRef, setActiveRef ] = useState(null);
-	const inputUrlRef = useRef();
 
 	useEffect(() => {
 		if(inputUrlRef.current)
@@ -84,7 +88,7 @@ export default () => {
 				<div className="m-30"><Keyboard forRef={ activeRef } onFocus={ () => setKeyboardFocused(true) } onBlur={ () => setKeyboardFocused(false) }/></div>
 				<form className="m-30" style={{ width: 300 }} onSubmit={ handleSubmit }>
 					<div className="form-group">
-						<Input iref={ inputUrlRef } type="url" className={ "dark-input" + " " + ((activeRef === inputUrlRef && keyboardFocused) ? "dark-input-focused" : "") } id="m3u" placeholder={ t('COMMON.M3U_URL') }/>
+						<Input iref={ inputUrlRef } type="url" value={ inputUrlValue } onChange={ e => setInputUrlValue(e.target.value) } className={ "dark-input" + " " + ((activeRef === inputUrlRef && keyboardFocused) ? "dark-input-focused" : "") } id="m3u" placeholder={ t('COMMON.M3U_URL') }/>
 					</div>
 					<Button type="submit" className="dark-button">{ t('COMMON.CONTINUE') }</Button>
 				</form>

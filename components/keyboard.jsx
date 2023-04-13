@@ -102,6 +102,9 @@ const Keyboard = ({ forRef = null, onKeyPressed, onFocus, onBlur }) => {
                     forRef.current.value = '';
                     break;
             }
+            
+            forRef.current.focus();
+            forRef.current.setSelectionRange(forRef.current.value.length, forRef.current.value.length);
         }
         
         if(onKeyPressed)
