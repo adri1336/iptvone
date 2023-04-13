@@ -6,6 +6,11 @@
             "CLEAR": "Limpiar",
             "BACK": "Atrás",
             "ENTER": "Entrar"
+        },
+        "PLAYER": {
+            "PLAY": "Reproducir",
+            "PAUSE": "Pausar",
+            "EXIT": "Salir"
         }
     },
     "COMMON": {

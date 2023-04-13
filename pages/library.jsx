@@ -6,6 +6,7 @@ import { useTranslation } from 'next-i18next';
 import Item from "@/components/item";
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
 import Router from "next/router";
+import Player from "@/components/player";
 
 export default () => {
     const { t } = useTranslation('common');
@@ -24,15 +25,14 @@ export default () => {
     }, [focusSelf]);
 
     if(playItem) {
-        const url = playItem.url.replace('/ts', '/m3u8');
+        const url = playItem.url.replace('/ts', '/m3u8').replace(".ts", ".m3u8");
         return <div className="page d-flex flex-column">
-            <button type="button" onClick={ () => setPlayItem(null) }>Back</button>
-            <video
-                width={ '100%' }
-                height={ '70%' }
-                controls
-                autoPlay
-                src={ url }
+            <Player
+                channelName={ playItem.name }
+                url={ url}
+                width='100vw'
+                height='100vh'
+                onClose={ () => setPlayItem(null) }
             />
         </div>
     }
