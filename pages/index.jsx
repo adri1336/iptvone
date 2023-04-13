@@ -55,11 +55,9 @@ export default () => {
 		if(typeof window !== 'undefined'){
 			loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });
 			const URL = localStorage.getItem('M3U_URL');
+			setInputUrlValue(URL);
 			if(URL) loadPlaylist(URL);
-			else {
-				setInputUrlValue(URL);
-				loader(false);
-			}
+			else loader(false);
 		}
 	}, []);
 

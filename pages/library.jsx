@@ -11,9 +11,9 @@ import Player from "@/components/player";
 export default () => {
     const { t } = useTranslation('common');
     const { focusKey, focusSelf } = useFocusable({});
-    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(null);
+    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(-1);
     const [ playItem, setPlayItem ] = useState(null);
-    const items = (IPTV.getItems()).filter(item => item.group.title === (IPTV.getGroups())[selectedGroupIndex]);
+    const items = selectedGroupIndex > -1 && (IPTV.getItems()).filter(item => item.group.title === (IPTV.getGroups())[selectedGroupIndex]);
     
     useEffect(() => {
         if(IPTV.getURL().length <= 0)
@@ -42,7 +42,7 @@ export default () => {
             <Sidebar onGroupSelected={ index => setSelectedGroupIndex(index) }/>
             <div className="mpage">
                 {
-                    selectedGroupIndex === null ?
+                    selectedGroupIndex === -1 ?
                         <div className="d-flex w-100 align-items-center justify-content-center">
                             <span className="text-medium fw-bold">{ t('PAGES.LIBRARY.SELECT_GROUP') }</span>
                         </div> :

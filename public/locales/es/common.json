@@ -11,6 +11,9 @@
             "PLAY": "Reproducir",
             "PAUSE": "Pausar",
             "EXIT": "Salir"
+        },
+        "SIDEBAR": {
+            "START": "Inicio"
         }
     },
     "COMMON": {

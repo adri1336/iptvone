@@ -3,9 +3,11 @@ import ENV from "@/utils/env";
 import IPTV from "@/utils/iptv";
 import GroupItem from "./groupitem";
 import { useState } from "react";
+import { useTranslation } from 'next-i18next';
 
 const Sidebar = ({ onGroupSelected }) => {
-    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(null);
+    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(-1);
+    const { t } = useTranslation('common');
 
     return (
         <div className={ styles.sidebarContainer }>
@@ -15,6 +17,18 @@ const Sidebar = ({ onGroupSelected }) => {
                     <span className="text-small">{ ENV.APP_VERSION }</span>
                 </div>
                 <div className="d-flex flex-column" style={{ marginTop: 60 }}>
+                    <GroupItem
+                        name={ t('COMPONENTS.SIDEBAR.START').toUpperCase() }
+                        selected={ selectedGroupIndex === -1 ? true : false }
+                        onSelected={ () => {
+                            setSelectedGroupIndex(-1);
+                            if(onGroupSelected)
+                            onGroupSelected(-1);
+                        }}
+                    />
+                </div>
+                <hr/>
+                <div className="d-flex flex-column">
                     <ul className="d-flex flex-column" style={{ marginBottom: 60 }}>
                         {
                             IPTV.getGroups().map((group, index) => {
