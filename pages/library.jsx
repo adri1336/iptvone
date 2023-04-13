@@ -43,8 +43,9 @@ export default () => {
             <div className="mpage">
                 {
                     selectedGroupIndex === -1 ?
-                        <div className="d-flex w-100 align-items-center justify-content-center">
+                        <div className="d-flex flex-column w-100 align-items-center justify-content-center">
                             <span className="text-medium fw-bold">{ t('PAGES.LIBRARY.SELECT_GROUP') }</span>
+                            <span className="text-small">{ IPTV.getURL() }</span>
                         </div> :
                         <div className="d-flex flex-column">
                             <span className="title-small fw-bold mb-40">{ (IPTV.getGroups())[selectedGroupIndex] }</span>

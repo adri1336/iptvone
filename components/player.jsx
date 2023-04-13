@@ -112,6 +112,7 @@ const Player = (props) => {
         }
     };
 
+    const isStream = props.url.includes('m3u');
     return (
         <div className={ styles.container } style={{ width: props.width, height: props.height }}>
             <PlayerControls
@@ -127,8 +128,8 @@ const Player = (props) => {
                 playing={ playing }
                 config={{
                     file: {
-                        forceHLS: true,
-                        forceSafariHLS: true
+                        forceHLS: isStream,
+                        forceSafariHLS: isStream
                     }
                 }}
             />

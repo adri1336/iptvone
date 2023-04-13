@@ -37,7 +37,7 @@ export default () => {
 			});
 
 			//establecer los grupos y los canales
-			IPTV.setURL(URL);
+			IPTV.setURL(url);
 			IPTV.setGroups(groups);
 			IPTV.setItems(list.items);
 
