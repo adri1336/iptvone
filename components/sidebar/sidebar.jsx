@@ -2,15 +2,21 @@ import styles from "@/styles/sidebar.module.css";
 import ENV from "@/utils/env";
 import IPTV from "@/utils/iptv";
 import GroupItem from "./groupitem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from 'next-i18next';
+import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
 
 const Sidebar = ({ onGroupSelected }) => {
     const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(-1);
     const { t } = useTranslation('common');
+    const { ref, focusKey, focusSelf } = useFocusable({});
 
-    return (
-        <div className={ styles.sidebarContainer }>
+    useEffect(() => {
+        focusSelf();
+    }, [focusSelf]);
+
+    return (<FocusContext.Provider value={ focusKey }>
+        <div ref={ ref } className={ styles.sidebarContainer }>
             <div className="d-flex flex-column h-100">
                 <div className="d-flex flex-column">
                     <span className="title-small fw-bold">{ ENV.APP_NAME }</span>
@@ -48,7 +54,7 @@ const Sidebar = ({ onGroupSelected }) => {
                 </div>
             </div>
         </div>
-    );
+    </FocusContext.Provider>);
 };
 
 export default Sidebar;

@@ -10,6 +10,7 @@ import Player from "@/components/player";
 import Keyboard from "@/components/keyboard";
 import Input from "@/components/input";
 import Button from "@/components/button";
+import FlatList from "flatlist-react";
 
 export default () => {
     const { t } = useTranslation('common');
@@ -133,15 +134,19 @@ export default () => {
                                     localStorage.removeItem('LAST_ITEMS');
                                 } }>{ t('PAGES.LIBRARY.DELETE_HISTORY') }</Button>
                                 <div className="d-flex flex-wrap">
-                                    {
-                                        lastItems.map((item, index) => {
-                                            return <Item
-                                                key={ index }
-                                                item={ item }
-                                                onSelected={ () => setPlayItem(item) }
-                                            />
-                                        })
-                                    }
+                                    <FlatList
+                                        renderOnScroll
+                                        list={ lastItems }
+                                        renderItem={
+                                            (item, index) => {
+                                                return <Item
+                                                    key={ index }
+                                                    item={ item }
+                                                    onSelected={ () => setPlayItem(item) }
+                                                />
+                                            }
+                                        }
+                                    />
                                 </div>
                             </div>
 
@@ -154,33 +159,42 @@ export default () => {
                                             <Input iref={ inputSearchRef } type="text" className={ "dark-input" + " " + ((activeRef === inputSearchRef && keyboardFocused) ? "dark-input-focused" : "") } id="m3u" placeholder={ t('COMMON.TITLE') }/>
                                         </div>
                                         <Button type="submit" className="dark-button">{ t('COMMON.CONTINUE') }</Button>
+                                        <Button type="button" className="dark-button" onClick={ () => setFoundItems([]) }>{ t('PAGES.LIBRARY.CLEAR_SEARCH') }</Button>
                                     </form>
                                 </div>
                                 <div className="d-flex flex-wrap mt-10">
-                                    {
-                                        foundItems.map((item, index) => {
-                                            return <Item
-                                                key={ index }
-                                                item={ item }
-                                                onSelected={ () => setPlayItem(item) }
-                                            />
-                                        })
-                                    }
+                                    <FlatList
+                                        renderOnScroll
+                                        list={ foundItems }
+                                        renderItem={
+                                            (item, index) => {
+                                                return <Item
+                                                    key={ index }
+                                                    item={ item }
+                                                    onSelected={ () => setPlayItem(item) }
+                                                />
+                                            }
+                                        }
+                                    />
                                 </div>
                             </div>
                         </div> :
                         <div className="d-flex flex-column">
                             <span className="title-small fw-bold mb-40">{ (IPTV.getGroups())[selectedGroupIndex] }</span>
                             <div className="d-flex flex-wrap justify-content-center">
-                                {
-                                    items.map((item, index) => {
-                                        return <Item
-                                            key={ index }
-                                            item={ item }
-                                            onSelected={ () => setPlayItem(item) }
-                                        />
-                                    })
-                                }
+                                <FlatList
+                                    renderOnScroll
+                                    list={ items }
+                                    renderItem={
+                                        (item, index) => {
+                                            return <Item
+                                                key={ index }
+                                                item={ item }
+                                                onSelected={ () => setPlayItem(item) }
+                                            />
+                                        }
+                                    }
+                                />
                             </div>
                         </div>
                 }
