@@ -19,13 +19,13 @@
     padding-left: 50px;
     padding-right: 50px;
     z-index: 100;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .control {
     cursor: pointer;
-    width: 100px;
-    height: 80px;
+    width: 250px;
+    height: 100px;
 }
 
 .control > span:hover {

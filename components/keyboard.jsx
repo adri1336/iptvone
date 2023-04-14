@@ -103,7 +103,6 @@ const Keyboard = ({ forRef = null, onKeyPressed, onFocus, onBlur }) => {
                     break;
             }
             
-            forRef.current.focus();
             forRef.current.setSelectionRange(forRef.current.value.length, forRef.current.value.length);
         }
         
@@ -138,10 +137,6 @@ const Keyboard = ({ forRef = null, onKeyPressed, onFocus, onBlur }) => {
                 <Key keyText={ t('COMPONENTS.KEYBOARD.SPACE') } onKeyPressed={ () => handleKeyPressed('space') }/>
                 <Key keyId={ 'backspace' } keyText={ t('COMPONENTS.KEYBOARD.BACKSPACE') } onKeyPressed={ () => handleKeyPressed('backspace') }/>
                 <Key keyText={ t('COMPONENTS.KEYBOARD.CLEAR') } onKeyPressed={ () => handleKeyPressed('clear') }/>
-            </div>
-            <div className={ styles.keyboardrow + " justify-content-center" }>
-                <Key keyId={ 'back' } keyText={ t('COMPONENTS.KEYBOARD.BACK') } onKeyPressed={ () => handleKeyPressed('back') }/>
-                <Key keyId={ 'enter' } keyText={ t('COMPONENTS.KEYBOARD.ENTER') } onKeyPressed={ () => handleKeyPressed('enter') }/>
             </div>
         </div>
         </FocusContext.Provider>);

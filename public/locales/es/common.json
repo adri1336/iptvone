@@ -3,9 +3,7 @@
         "KEYBOARD": {
             "SPACE": "Espacio",
             "BACKSPACE": "Retroceso",
-            "CLEAR": "Limpiar",
-            "BACK": "Atrás",
-            "ENTER": "Entrar"
+            "CLEAR": "Limpiar"
         },
         "PLAYER": {
             "PLAY": "Reproducir",
@@ -32,7 +30,8 @@
         "LIBRARY": {
             "INFO": "Elementos: {{items}} - Grupos: {{groups}} - URL: {{url}}",
             "SEARCH": "Buscar",
-            "LAST_PLAYED": "Últimos reproducidos"
+            "LAST_PLAYED": "Últimos reproducidos",
+            "CHANGE_URL": "Cambiar URL"
         }
     }
 }

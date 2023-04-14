@@ -12,7 +12,7 @@
 
 .mpage {
 	margin: 20px;
-	margin-left: 370px;
+	margin-left: 620px;
 	width: 100%;
 	display: flex;
 }
@@ -32,27 +32,27 @@ a > span:not(.material-icons):hover {
 }
 
 .title-big {
-	font-size: 38pt;
+	font-size: 58pt;
 }
 
 .title-medium {
-	font-size: 26pt;
+	font-size: 46pt;
 }
 
 .title-small {
-	font-size: 22pt;
+	font-size: 42pt;
 }
 
 .text-big {
-	font-size: 18pt;
+	font-size: 38pt;
 }
 
 .text-medium {
-	font-size: 14pt;
+	font-size: 34pt;
 }
 
 .text-small {
-	font-size: 10pt;
+	font-size: 30pt;
 }
 
 .m-100 {
@@ -144,6 +144,7 @@ button {
 	padding: 10px;
 	width: 100%;
 	margin: 10px;
+	font-size: 30pt;
 }
 
 .dark-input-focused,
@@ -160,6 +161,7 @@ button {
 	width: 100%;
 	margin: 10px;
 	text-align: center;
+	font-size: 30pt;
 }
 
 .dark-button-focused,

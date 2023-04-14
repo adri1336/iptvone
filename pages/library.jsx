@@ -123,11 +123,12 @@ export default () => {
                             <div className="d-flex flex-column m-30">
                                 <span className="text-medium fw-bold">{ t('COMMON.INFO') }</span>
                                 <span className="text-small">{ t('PAGES.LIBRARY.INFO', { items: IPTV.getItems().length, groups: IPTV.getGroups().length, url: IPTV.getURL() }) }</span>
+                                <Button type="button" className="dark-button" onClick={ () => Router.replace('/?change=true')}>{ t('PAGES.LIBRARY.CHANGE_URL') }</Button>
                             </div>
 
                             <div className="d-flex flex-column m-30">
                                 <span className="text-medium fw-bold">{ t('PAGES.LIBRARY.LAST_PLAYED') }</span>
-                                <div className="d-flex flex-wrap m-30">
+                                <div className="d-flex flex-wrap">
                                     {
                                         lastItems.map((item, index) => {
                                             return <Item
@@ -151,7 +152,7 @@ export default () => {
                                         <Button type="submit" className="dark-button">{ t('COMMON.CONTINUE') }</Button>
                                     </form>
                                 </div>
-                                <div className="d-flex flex-wrap m-30">
+                                <div className="d-flex flex-wrap mt-10">
                                     {
                                         foundItems.map((item, index) => {
                                             return <Item
@@ -166,7 +167,7 @@ export default () => {
                         </div> :
                         <div className="d-flex flex-column">
                             <span className="title-small fw-bold mb-40">{ (IPTV.getGroups())[selectedGroupIndex] }</span>
-                            <div className="d-flex flex-wrap">
+                            <div className="d-flex flex-wrap justify-content-center">
                                 {
                                     items.map((item, index) => {
                                         return <Item

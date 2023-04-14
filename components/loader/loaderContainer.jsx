@@ -26,7 +26,7 @@ const Loader = () => {
         { options?.logo && <span className={ styles.logo + " title-small fw-bold" }>{ ENV.APP_NAME }</span> }
         <div className={ styles.loader }>
           <div className="d-flex flex-column align-items-center justify-content-center" style={{ width: '700px', height: '200px' }}>
-            <Oval width={ 80 } height={ 80 } color='#c4c4c4' secondaryColor='#454545'/>
+            <Oval width={ 200 } height={ 200 } color='#c4c4c4' secondaryColor='#454545'/>
             { options?.message && <span className={ styles.loaderMessage }>{ options.message }</span> }
           </div>
         </div>

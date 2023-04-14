@@ -12,8 +12,10 @@ import { toast } from 'react-toastify';
 import parser from "iptv-playlist-parser";
 import IPTV from "@/utils/iptv";
 import Router from "next/router";
+import { useRouter } from 'next/router';
 
 export default () => {
+	const router = useRouter();
 	const { t } = useTranslation('common');
 	const { focusKey, focusSelf } = useFocusable({});
 
@@ -21,6 +23,20 @@ export default () => {
 	const [ activeRef, setActiveRef ] = useState(null);
 	const [ inputUrlValue, setInputUrlValue ] = useState('');
 	const inputUrlRef = useRef();
+
+	useEffect(() => {
+		if(router.isReady && typeof window !== 'undefined') {
+			const { change } = router.query;
+
+			const URL = localStorage.getItem('M3U_URL');
+			setInputUrlValue(URL);
+			if(!change) {
+				loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });				
+				if(URL) loadPlaylist(URL);
+				else loader(false);
+			}
+		}
+    }, [router.query]);
 
 	const loadPlaylist = async url => {
 		const res = await fetch(url);
@@ -51,16 +67,6 @@ export default () => {
 		}
 	};
 
-	useEffect(() => {
-		if(typeof window !== 'undefined'){
-			loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });
-			const URL = localStorage.getItem('M3U_URL');
-			setInputUrlValue(URL);
-			if(URL) loadPlaylist(URL);
-			else loader(false);
-		}
-	}, []);
-
     useEffect(() => {
         focusSelf();
     }, [focusSelf]);
@@ -84,7 +90,7 @@ export default () => {
 			<span className="text-small fw-bold mb-30">{ ENV.APP_VERSION }</span>
 			<div className="d-flex flex-row">
 				<div className="m-30"><Keyboard forRef={ activeRef } onFocus={ () => setKeyboardFocused(true) } onBlur={ () => setKeyboardFocused(false) }/></div>
-				<form className="m-30" style={{ width: 300 }} onSubmit={ handleSubmit }>
+				<form className="m-30" style={{ width: 800 }} onSubmit={ handleSubmit }>
 					<div className="form-group">
 						<Input iref={ inputUrlRef } type="url" value={ inputUrlValue } onChange={ e => setInputUrlValue(e.target.value) } className={ "dark-input" + " " + ((activeRef === inputUrlRef && keyboardFocused) ? "dark-input-focused" : "") } id="m3u" placeholder={ t('COMMON.M3U_URL') }/>
 					</div>

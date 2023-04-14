@@ -1,20 +1,18 @@
 import { createRef, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import styles from "@/styles/player.module.css";
-import { FaPlay, FaPause } from "react-icons/fa";
-import { MdReplay } from "react-icons/md";
-import { MdClose } from "react-icons/md";
+import { FaPlay, FaPause, FaRedoAlt, FaSignInAlt } from "react-icons/fa";
 import { useTranslation } from 'next-i18next';
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
 
 const Control = ({ icon, text, onClick, setControls }) => {
     const { ref, focused } = useFocusable({
         onEnterPress: () => {
-            setControls(true);
+            setControls(control => control + 1);
             if(onClick)
             onClick();
         },
-        onFocus: () => setControls(true)
+        onFocus: () => setControls(control => control + 1)
     });
 
     return (
@@ -25,13 +23,14 @@ const Control = ({ icon, text, onClick, setControls }) => {
     );
 };
 
-const PlayerControls = ({ playerProps, onAction, isStream }) => {
-    const [ controls, setControls ] = useState(true);
+const PlayerControls = ({ playerProps, onAction, isStream, duration, progress }) => {
+    const [ controls, setControls ] = useState(1);
     useEffect(() => {
-        if(controls) {
+        console.log("controls: ", controls)
+        if(controls > 0) {
             const timer = window.setInterval(() => {
-                setControls(false);
-            }, 3000);
+                setControls(0);
+            }, 6000);
 
             return () => { 
                 window.clearInterval(timer);
@@ -42,10 +41,10 @@ const PlayerControls = ({ playerProps, onAction, isStream }) => {
     const { t } = useTranslation('common');
     const { ref, focusKey, focusSelf } = useFocusable({
         onFocus: () => {
-            setControls(true);
+            setControls(control => control + 1);
         },
         onBlur: () => {
-            setControls(false);
+            setControls(0);
         }
     });
 
@@ -53,11 +52,23 @@ const PlayerControls = ({ playerProps, onAction, isStream }) => {
         focusSelf();
     }, [focusSelf]);
 
+    let durationString = "";
+    if(duration > 0)
+    durationString = new Date(duration * 1000).toISOString().slice(11, 19);
+
+    let progressString = "";
+    if(progress && progress.playedSeconds > 0)
+    progressString = new Date(progress.playedSeconds * 1000).toISOString().slice(11, 19);
+    
+
     return (<FocusContext.Provider value={ focusKey }>
-        { !controls && <div className={ styles.showControls } onMouseMove={ () => setControls(true) }/> }
+        { !controls && <div className={ styles.showControls } onMouseMove={ () => setControls(control => control + 1) }/> }
         { !controls && <div className={ styles.hideControls }/> }
         <div ref={ ref } className={ styles.controls + " d-flex flex-column justify-content-between" } style={{ width: playerProps.width, height: playerProps.height, zIndex: controls ? 100 : 0 }}>
-            <span className="text-small fw-bold text-center">{ playerProps.channelName }</span>
+            <div className="d-flex flex-column">
+                <span className="text-medium fw-bold text-center">{ playerProps.channelName }</span>
+                { !isStream && duration > 0 && <span className="text-small fw-bold text-center">{ `${ progressString }/${ durationString }` }</span> }
+            </div>
             <div className="d-flex flex-row justify-content-between">
                 <div className="d-flex">
                     {
@@ -76,12 +87,15 @@ const PlayerControls = ({ playerProps, onAction, isStream }) => {
                                 setControls={ setControls }
                             />
                     }
-                    <Control
-                        icon={ <MdReplay/> }
-                        text={ t('COMPONENTS.PLAYER.REPLAY') }
-                        onClick={ () => onAction('replay') }
-                        setControls={ setControls }
-                    />
+                    {
+                        !isStream &&
+                        <Control
+                            icon={ <FaRedoAlt/> }
+                            text={ t('COMPONENTS.PLAYER.REPLAY') }
+                            onClick={ () => onAction('replay') }
+                            setControls={ setControls }
+                        />
+                    }
                 </div>
                 {
                     !isStream &&
@@ -119,7 +133,7 @@ const PlayerControls = ({ playerProps, onAction, isStream }) => {
                     </div>
                 }
                 <Control
-                    icon={ <MdClose/> }
+                    icon={ <FaSignInAlt/> }
                     text={ t('COMPONENTS.PLAYER.EXIT') }
                     onClick={ () => onAction('close') }
                     setControls={ setControls }
@@ -133,6 +147,7 @@ const Player = (props) => {
     const isStream = props.url.includes('m3u');
     const [ windowLoaded, setWindowLoaded ] = useState(false);
     const [ playing, setPlaying ] = useState(isStream);
+    const [ progress, setProgress ] = useState(null);
     const [ duration, setDuration ] = useState(null);
     const playerRef = createRef();
 
@@ -142,7 +157,7 @@ const Player = (props) => {
     }, []);
 
     useEffect(() => {
-        if(duration && !playing && playerRef?.current && props.playedSeconds > 0) {
+        if(progress === null && duration && !playing && playerRef?.current && props.playedSeconds > 0) {
             if(duration > props.playedSeconds)
             playerRef.current.seekTo(props.playedSeconds);
         }
@@ -193,6 +208,8 @@ const Player = (props) => {
                 playerProps={ { playing: playing, ...props } }
                 onAction={ handleControlAction }    
                 isStream={ isStream }
+                duration={ duration }
+                progress={ progress }
             />
             <ReactPlayer
                 ref={ playerRef }
@@ -209,6 +226,7 @@ const Player = (props) => {
                     }
                 }}
                 onProgress={ progress => {
+                    setProgress(progress);
                     if(!isStream && props.onProgress)
                     props.onProgress(progress);
                 } }

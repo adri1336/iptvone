@@ -11,14 +11,19 @@
 
 .key {
     font-weight: bold;
-    min-width: 40px;
-    min-height: 40px;
+    min-width: 60px;
+    min-height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 2px;
     flex: 1;
     user-select: none;
+    font-size: 24pt;
+    cursor: pointer;
+    margin: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .key:hover {
