@@ -8,8 +8,8 @@
 .logo {
   position: absolute;
   top: 200px;
-  left: calc(50% - 300px);
-  width: 600px;
+  left: calc(50% - 150px);
+  width: 300px;
   text-align: center;
 }
 
@@ -21,8 +21,8 @@
 
 .loaderMessage {
   margin: 20px;
-  font-size: 30pt;
+  font-size: 10pt;
   user-select: none;
   text-align: center;
-  width: 100%;
+  width: 60%;
 }

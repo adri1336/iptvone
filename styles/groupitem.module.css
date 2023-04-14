@@ -4,15 +4,15 @@
     cursor: pointer;
     margin-top: 10px;
     margin-bottom: 10px;
-    font-size: 20pt;
+    font-size: 14pt;
 }
 
 .lifocused,
 .li:hover {
-    border-bottom: 2px solid whitesmoke;
+    border-bottom: 1px solid whitesmoke;
 }
 
 .liselected {
     font-weight: bold;
-    border-bottom: 5px solid whitesmoke;
+    border-bottom: 2px solid whitesmoke;
 }

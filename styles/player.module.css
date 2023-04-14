@@ -19,21 +19,28 @@
     padding-left: 50px;
     padding-right: 50px;
     z-index: 100;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
+.controlWithIcon,
 .control {
     cursor: pointer;
-    width: 250px;
-    height: 100px;
+    width: 100px;
+    height: 80px;
 }
 
-.control > span:hover {
-    border-bottom: 1px solid whitesmoke;
+.controlWithIcon > span {
+    color: transparent;
+}
+
+.controlWithIcon:hover > span {
+    border-bottom: 2px solid whitesmoke;
+    color: whitesmoke;
 }
 
 .controlfocused > span {
-    border-bottom: 1px solid whitesmoke;
+    border-bottom: 2px solid whitesmoke;
+    color: whitesmoke;
 }
 
 .hideControls {

@@ -6,7 +6,8 @@ const Button = (props) => {
         onEnterPress: () => {
             if(buttonRef?.current)
             buttonRef.current.click();
-        }
+        },
+        onFocus: () => ref?.current && ref.current.scrollIntoView({ behavior: "smooth", block: "center" })
     });
 
     const buttonRef = useRef();

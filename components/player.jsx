@@ -16,7 +16,7 @@ const Control = ({ icon, text, onClick, setControls }) => {
     });
 
     return (
-        <div ref={ ref } className={ styles.control + " " +  (focused ? styles.controlfocused : "") + " d-flex flex-column justify-content-center align-items-center" } onClick={ () => onClick() }>
+        <div ref={ ref } className={ (icon ? styles.controlWithIcon : styles.control) + " " +  (focused ? styles.controlfocused : "") + " d-flex flex-column justify-content-center align-items-center" } onClick={ () => onClick() }>
             { icon }
             <span className={ "text-small fw-bold m-10" }>{ text }</span>
         </div>
@@ -26,7 +26,6 @@ const Control = ({ icon, text, onClick, setControls }) => {
 const PlayerControls = ({ playerProps, onAction, isStream, duration, progress }) => {
     const [ controls, setControls ] = useState(1);
     useEffect(() => {
-        console.log("controls: ", controls)
         if(controls > 0) {
             const timer = window.setInterval(() => {
                 setControls(0);
@@ -67,6 +66,7 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
         <div ref={ ref } className={ styles.controls + " d-flex flex-column justify-content-between" } style={{ width: playerProps.width, height: playerProps.height, zIndex: controls ? 100 : 0 }}>
             <div className="d-flex flex-column">
                 <span className="text-medium fw-bold text-center">{ playerProps.channelName }</span>
+                <span className="fw-bold text-center" style={{ fontSize: '10pt' }}>{ playerProps.url }</span>
                 { !isStream && duration > 0 && <span className="text-small fw-bold text-center">{ `${ progressString }/${ durationString }` }</span> }
             </div>
             <div className="d-flex flex-row justify-content-between">
