@@ -9,6 +9,7 @@
         },
         "PLAYER": {
             "PLAY": "Reproducir",
+            "REPLAY": "Reiniciar",
             "PAUSE": "Pausar",
             "EXIT": "Salir"
         },
@@ -19,7 +20,9 @@
     "COMMON": {
         "M3U_URL": "URL de la lista M3U",
         "CONTINUE": "Continuar",
-        "URL": "URL"
+        "URL": "URL",
+        "INFO": "Información",
+        "TITLE": "Título"
     },
     "PAGES": {
         "M3U": {
@@ -27,7 +30,9 @@
             "LOAD_ERROR": "No se ha podido cargar la lista M3U."
         },
         "LIBRARY": {
-            "SELECT_GROUP": "Selecciona un grupo"
+            "INFO": "Elementos: {{items}} - Grupos: {{groups}} - URL: {{url}}",
+            "SEARCH": "Buscar",
+            "LAST_PLAYED": "Últimos reproducidos"
         }
     }
 }

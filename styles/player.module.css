@@ -28,16 +28,12 @@
     height: 80px;
 }
 
-.control > span {
-    color: transparent;
-}
-
-.control:hover span {
-    color: whitesmoke;
+.control > span:hover {
+    border-bottom: 1px solid whitesmoke;
 }
 
 .controlfocused > span {
-    color: whitesmoke;
+    border-bottom: 1px solid whitesmoke;
 }
 
 .hideControls {

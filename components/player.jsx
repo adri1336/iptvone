@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import styles from "@/styles/player.module.css";
 import { FaPlay, FaPause } from "react-icons/fa";
+import { MdReplay } from "react-icons/md";
 import { MdClose } from "react-icons/md";
 import { useTranslation } from 'next-i18next';
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
@@ -24,7 +25,7 @@ const Control = ({ icon, text, onClick, setControls }) => {
     );
 };
 
-const PlayerControls = ({ playerProps, onAction }) => {
+const PlayerControls = ({ playerProps, onAction, isStream }) => {
     const [ controls, setControls ] = useState(true);
     useEffect(() => {
         if(controls) {
@@ -58,21 +59,64 @@ const PlayerControls = ({ playerProps, onAction }) => {
         <div ref={ ref } className={ styles.controls + " d-flex flex-column justify-content-between" } style={{ width: playerProps.width, height: playerProps.height, zIndex: controls ? 100 : 0 }}>
             <span className="text-small fw-bold text-center">{ playerProps.channelName }</span>
             <div className="d-flex flex-row justify-content-between">
+                <div className="d-flex">
+                    {
+                        playerProps.playing ?
+                            <Control
+                                icon={ <FaPause/> }
+                                text={ t('COMPONENTS.PLAYER.PAUSE') }
+                                onClick={ () => onAction('pause') }
+                                setControls={ setControls }
+                            />
+                        :
+                            <Control
+                                icon={ <FaPlay/> }
+                                text={ t('COMPONENTS.PLAYER.PLAY') }
+                                onClick={ () => onAction('play') }
+                                setControls={ setControls }
+                            />
+                    }
+                    <Control
+                        icon={ <MdReplay/> }
+                        text={ t('COMPONENTS.PLAYER.REPLAY') }
+                        onClick={ () => onAction('replay') }
+                        setControls={ setControls }
+                    />
+                </div>
                 {
-                    playerProps.playing ?
+                    !isStream &&
+                    <div className="d-flex">
                         <Control
-                            icon={ <FaPause/> }
-                            text={ t('COMPONENTS.PLAYER.PAUSE') }
-                            onClick={ () => onAction('pause') }
+                            text={ '-20m' }
+                            onClick={ () => onAction('seek:-20m') }
                             setControls={ setControls }
                         />
-                    :
                         <Control
-                            icon={ <FaPlay/> }
-                            text={ t('COMPONENTS.PLAYER.PLAY') }
-                            onClick={ () => onAction('play') }
+                            text={ '-5m' }
+                            onClick={ () => onAction('seek:-5m') }
                             setControls={ setControls }
                         />
+                        <Control
+                            text={ '-30s' }
+                            onClick={ () => onAction('seek:-30s') }
+                            setControls={ setControls }
+                        />
+                        <Control
+                            text={ '+30s' }
+                            onClick={ () => onAction('seek:+30s') }
+                            setControls={ setControls }
+                        />
+                        <Control
+                            text={ '+5m' }
+                            onClick={ () => onAction('seek:+5m') }
+                            setControls={ setControls }
+                        />
+                        <Control
+                            text={ '+20m' }
+                            onClick={ () => onAction('seek:+20m') }
+                            setControls={ setControls }
+                        />
+                    </div>
                 }
                 <Control
                     icon={ <MdClose/> }
@@ -86,13 +130,23 @@ const PlayerControls = ({ playerProps, onAction }) => {
 };
 
 const Player = (props) => {
+    const isStream = props.url.includes('m3u');
     const [ windowLoaded, setWindowLoaded ] = useState(false);
-    const [ playing, setPlaying ] = useState(true);
+    const [ playing, setPlaying ] = useState(isStream);
+    const [ duration, setDuration ] = useState(null);
+    const playerRef = createRef();
 
     useEffect(() => {
         if(typeof window !== 'undefined')
         setWindowLoaded(true);
     }, []);
+
+    useEffect(() => {
+        if(duration && !playing && playerRef?.current && props.playedSeconds > 0) {
+            if(duration > props.playedSeconds)
+            playerRef.current.seekTo(props.playedSeconds);
+        }
+    }, [playerRef, props.playedSeconds, duration]);
 
     if(!windowLoaded)
     return <></>;
@@ -102,6 +156,9 @@ const Player = (props) => {
             case 'play':
                 setPlaying(true);
                 break;
+            case 'replay':
+                playerRef.current.seekTo(0);
+                break;
             case 'pause':
                 setPlaying(false);
                 break;
@@ -109,17 +166,36 @@ const Player = (props) => {
                 if(props.onClose)
                 props.onClose();
                 break;
+            case 'seek:-20m':
+                playerRef.current.seekTo(playerRef.current.getCurrentTime() - 1200);
+                break;
+            case 'seek:-5m':
+                playerRef.current.seekTo(playerRef.current.getCurrentTime() - 300);
+                break;
+            case 'seek:-30s':
+                playerRef.current.seekTo(playerRef.current.getCurrentTime() - 30);
+                break;
+            case 'seek:+30s':
+                playerRef.current.seekTo(playerRef.current.getCurrentTime() + 30);
+                break;
+            case 'seek:+5m':
+                playerRef.current.seekTo(playerRef.current.getCurrentTime() + 300);
+                break;
+            case 'seek:+20m':
+                playerRef.current.seekTo(playerRef.current.getCurrentTime() + 1200);
+                break;
         }
     };
 
-    const isStream = props.url.includes('m3u');
     return (
         <div className={ styles.container } style={{ width: props.width, height: props.height }}>
             <PlayerControls
                 playerProps={ { playing: playing, ...props } }
                 onAction={ handleControlAction }    
+                isStream={ isStream }
             />
             <ReactPlayer
+                ref={ playerRef }
                 url={ props.url }
                 className={ styles.player }
                 width={ props.width }
@@ -132,6 +208,16 @@ const Player = (props) => {
                         forceSafariHLS: isStream
                     }
                 }}
+                onProgress={ progress => {
+                    if(!isStream && props.onProgress)
+                    props.onProgress(progress);
+                } }
+                onSeek={ () => !playing && setPlaying(true) }
+                onEnded={ () => {
+                    if(props.onClose)
+                    props.onClose();
+                }}
+                onDuration={ (duration) => setDuration(duration) }
             />
         </div>
     );
