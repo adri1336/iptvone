@@ -108,7 +108,7 @@ export default () => {
                     url={ playItem.url.replace('/ts', '/m3u8').replace(".ts", ".m3u8") }
                     width='100vw'
                     height='100vh'
-                    onClose={ () => setPlayItem(null) }
+                    onClose={ () => { setPlayedSeconds(0); setPlayItem(null); } }
                     onProgress={ progress => savePlayItemProgress(playItem, progress) }
                     playedSeconds={ playedSeconds }
                 />
@@ -123,11 +123,15 @@ export default () => {
                             <div className="d-flex flex-column m-30">
                                 <span className="text-medium fw-bold">{ t('COMMON.INFO') }</span>
                                 <span className="text-small">{ t('PAGES.LIBRARY.INFO', { items: IPTV.getItems().length, groups: IPTV.getGroups().length, url: IPTV.getURL() }) }</span>
-                                <Button type="button" className="dark-button" onClick={ () => Router.replace('/?change=true')}>{ t('PAGES.LIBRARY.CHANGE_URL') }</Button>
+                                <Button type="button" className="dark-button" onClick={ () => Router.replace('/?change=true') }>{ t('PAGES.LIBRARY.CHANGE_URL') }</Button>
                             </div>
 
                             <div className="d-flex flex-column m-30">
                                 <span className="text-medium fw-bold">{ t('PAGES.LIBRARY.LAST_PLAYED') }</span>
+                                <Button type="button" className="dark-button" onClick={ () => {
+                                    setLastItems([]);
+                                    localStorage.removeItem('LAST_ITEMS');
+                                } }>{ t('PAGES.LIBRARY.DELETE_HISTORY') }</Button>
                                 <div className="d-flex flex-wrap">
                                     {
                                         lastItems.map((item, index) => {

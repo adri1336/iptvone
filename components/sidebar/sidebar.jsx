@@ -27,7 +27,6 @@ const Sidebar = ({ onGroupSelected }) => {
                         }}
                     />
                 </div>
-                <hr/>
                 <div className="d-flex flex-column">
                     <ul className="d-flex flex-column" style={{ marginBottom: 60 }}>
                         {

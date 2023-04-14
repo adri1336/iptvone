@@ -67,7 +67,7 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
             <div className="d-flex flex-column">
                 <span className="text-medium fw-bold text-center">{ playerProps.channelName }</span>
                 <span className="fw-bold text-center" style={{ fontSize: '10pt' }}>{ playerProps.url }</span>
-                { !isStream && duration > 0 && <span className="text-small fw-bold text-center">{ `${ progressString }/${ durationString }` }</span> }
+                { !isStream && durationString.length > 0 && progressString.length > 0 && <span className="text-small fw-bold text-center">{ `${ progressString }/${ durationString }` }</span> }
             </div>
             <div className="d-flex flex-row justify-content-between">
                 <div className="d-flex">
@@ -227,7 +227,8 @@ const Player = (props) => {
                 }}
                 onProgress={ progress => {
                     setProgress(progress);
-                    if(!isStream && props.onProgress)
+                    
+                    if(props.onProgress)
                     props.onProgress(progress);
                 } }
                 onSeek={ () => !playing && setPlaying(true) }
@@ -235,7 +236,12 @@ const Player = (props) => {
                     if(props.onClose)
                     props.onClose();
                 }}
-                onDuration={ (duration) => setDuration(duration) }
+                onDuration={ (duration) => {
+                    if(!props.playedSeconds && !playing)
+                    setPlaying(true);
+
+                    setDuration(duration);
+                } }
             />
         </div>
     );

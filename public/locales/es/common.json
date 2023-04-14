@@ -31,7 +31,8 @@
             "INFO": "Elementos: {{items}} - Grupos: {{groups}} - URL: {{url}}",
             "SEARCH": "Buscar",
             "LAST_PLAYED": "Últimos reproducidos",
-            "CHANGE_URL": "Cambiar URL"
+            "CHANGE_URL": "Cambiar URL",
+            "DELETE_HISTORY": "Borrar historial"
         }
     }
 }
