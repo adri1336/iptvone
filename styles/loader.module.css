@@ -22,6 +22,7 @@
 .loaderMessage {
   margin: 20px;
   font-size: 16pt;
+  font-weight: bold;
   user-select: none;
   text-align: center;
   width: 60%;

@@ -18,7 +18,7 @@ const Control = ({ icon, text, onClick, setControls }) => {
     return (
         <div ref={ ref } className={ (icon ? styles.controlWithIcon : styles.control) + " " +  (focused ? styles.controlfocused : "") + " d-flex flex-column justify-content-center align-items-center" } onClick={ () => onClick() }>
             { icon }
-            <span className={ "text-small fw-bold m-10" }>{ text }</span>
+            <span className={ "text-medium fw-bold m-10" }>{ text }</span>
         </div>
     );
 };
@@ -69,35 +69,7 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
                 <span className="text-medium fw-bold text-center">{ playerProps.channelName }</span>
                 <span className="fw-bold text-center" style={{ fontSize: '10pt' }}>{ playerProps.url }</span>
                 { !isStream && durationString.length > 0 && progressString.length > 0 && <span className="text-small fw-bold text-center">{ `${ progressString }/${ durationString }` }</span> }
-            </div>
-            <div className="d-flex flex-row justify-content-between">
-                <div className="d-flex">
-                    {
-                        playerProps.playing ?
-                            <Control
-                                icon={ <FaPause/> }
-                                text={ t('COMPONENTS.PLAYER.PAUSE') }
-                                onClick={ () => onAction('pause') }
-                                setControls={ setControls }
-                            />
-                        :
-                            <Control
-                                icon={ <FaPlay/> }
-                                text={ t('COMPONENTS.PLAYER.PLAY') }
-                                onClick={ () => onAction('play') }
-                                setControls={ setControls }
-                            />
-                    }
-                    {
-                        !isStream &&
-                        <Control
-                            icon={ <FaRedoAlt/> }
-                            text={ t('COMPONENTS.PLAYER.REPLAY') }
-                            onClick={ () => onAction('replay') }
-                            setControls={ setControls }
-                        />
-                    }
-                </div>
+                <div className="d-flex flew-row justify-content-center">
                 {
                     !isStream &&
                     <div className="d-flex">
@@ -133,6 +105,36 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
                         />
                     </div>
                 }
+                </div>
+            </div>
+            <div className="d-flex flex-row justify-content-between">
+                <div className="d-flex">
+                    {
+                        playerProps.playing ?
+                            <Control
+                                icon={ <FaPause/> }
+                                text={ t('COMPONENTS.PLAYER.PAUSE') }
+                                onClick={ () => onAction('pause') }
+                                setControls={ setControls }
+                            />
+                        :
+                            <Control
+                                icon={ <FaPlay/> }
+                                text={ t('COMPONENTS.PLAYER.PLAY') }
+                                onClick={ () => onAction('play') }
+                                setControls={ setControls }
+                            />
+                    }
+                    {
+                        !isStream &&
+                        <Control
+                            icon={ <FaRedoAlt/> }
+                            text={ t('COMPONENTS.PLAYER.REPLAY') }
+                            onClick={ () => onAction('replay') }
+                            setControls={ setControls }
+                        />
+                    }
+                </div>
                 <Control
                     icon={ <FaSignInAlt/> }
                     text={ t('COMPONENTS.PLAYER.EXIT') }
