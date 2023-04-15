@@ -11,14 +11,16 @@
 
 .key {
     font-weight: bold;
-    min-width: 40px;
-    min-height: 40px;
+    min-width: 50px;
+    min-height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 2px;
     flex: 1;
     user-select: none;
+    font-size: 16pt;
+    cursor: pointer;
 }
 
 .key:hover {
@@ -26,6 +28,11 @@
     border-radius: 5px;
     color: #1e1e1e;
     opacity: 0.5;
+}
+
+.pressedkey,
+.key:active {
+    transform: scale(0.9);
 }
 
 .focusedkey {

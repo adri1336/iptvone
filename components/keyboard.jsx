@@ -6,7 +6,15 @@ import { FaBackspace } from "react-icons/fa";
 
 const Key = ({ keyId, keyText, onKeyPressed }) => {
     const { ref, focused } = useFocusable({
-        onEnterPress: () => onKeyPressed(),
+        onEnterPress: () => {
+            if(ref?.current) {
+                ref.current.classList.add(styles.pressedkey);
+                setTimeout(() => {
+                    ref.current.classList.remove(styles.pressedkey);
+                }, 100);
+            }
+            onKeyPressed();
+        },
         onFocus: () => ref?.current && ref.current.scrollIntoView({ behavior: "smooth", block: "center" })
     });
 
