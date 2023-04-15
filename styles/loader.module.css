@@ -7,7 +7,7 @@
 
 .logo {
   position: absolute;
-  top: 200px;
+  top: 100px;
   left: calc(50% - 150px);
   width: 300px;
   text-align: center;
@@ -21,7 +21,7 @@
 
 .loaderMessage {
   margin: 20px;
-  font-size: 10pt;
+  font-size: 16pt;
   user-select: none;
   text-align: center;
   width: 60%;

@@ -27,6 +27,13 @@ export default () => {
 	const inputSearchRef = useRef();
     
     useEffect(() => {
+        setFoundItems([]);
+        if(inputSearchRef?.current) {
+            inputSearchRef.current.value = '';
+        }
+    }, [selectedGroupIndex]);
+
+    useEffect(() => {
 		if(inputSearchRef.current)
 		setActiveRef(inputSearchRef);
 	}, [inputSearchRef]);
@@ -136,6 +143,7 @@ export default () => {
                                 <div className="d-flex flex-wrap">
                                     <FlatList
                                         renderOnScroll
+                                        renderWhenEmpty={ () => <></> }
                                         list={ lastItems }
                                         renderItem={
                                             (item, index) => {
@@ -165,6 +173,7 @@ export default () => {
                                 <div className="d-flex flex-wrap mt-10">
                                     <FlatList
                                         renderOnScroll
+                                        renderWhenEmpty={ () => <></> }
                                         list={ foundItems }
                                         renderItem={
                                             (item, index) => {
@@ -184,6 +193,7 @@ export default () => {
                             <div className="d-flex flex-wrap justify-content-center">
                                 <FlatList
                                     renderOnScroll
+                                    renderWhenEmpty={ () => <></> }
                                     list={ items }
                                     renderItem={
                                         (item, index) => {

@@ -13,8 +13,7 @@
 .mpage {
 	margin: 20px;
 	margin-left: 470px;
-	width: 100%;
-	display: flex;
+	width: calc(100% - 490px);
 }
 
 a {
@@ -142,13 +141,13 @@ button {
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 5px;
 	padding: 10px;
-	width: 100%;
+	width: calc(100% - 10px);
 	margin: 10px;
 }
 
 .dark-input-focused,
 .dark-input:focus {
-    border: 2px solid whitesmoke;
+    border: 4px solid white;
 }
 
 .dark-button {
@@ -157,7 +156,7 @@ button {
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 5px;
 	padding: 10px;
-	width: 100%;
+	width: calc(100% - 10px);
 	margin: 10px;
 	text-align: center;
 }
@@ -165,7 +164,7 @@ button {
 .dark-button-focused,
 .dark-button:hover,
 .dark-button:focus {
-	border: 2px solid whitesmoke;
+	border: 4px solid white;
 }
 
 ul {

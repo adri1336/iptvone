@@ -44,7 +44,8 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
         },
         onBlur: () => {
             setControls(0);
-        }
+        },
+        isFocusBoundary: true
     });
 
     useEffect(() => {

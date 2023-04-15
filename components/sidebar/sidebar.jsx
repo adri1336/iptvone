@@ -22,7 +22,7 @@ const Sidebar = ({ onGroupSelected }) => {
                     <span className="title-small fw-bold">{ ENV.APP_NAME }</span>
                     <span className="text-small">{ ENV.APP_VERSION }</span>
                 </div>
-                <div className="d-flex flex-column" style={{ marginTop: 60 }}>
+                <div className="d-flex flex-column" style={{ marginTop: 60, marginBottom: 60 }}>
                     <GroupItem
                         name={ t('COMPONENTS.SIDEBAR.START').toUpperCase() }
                         selected={ selectedGroupIndex === -1 ? true : false }
@@ -33,7 +33,6 @@ const Sidebar = ({ onGroupSelected }) => {
                         }}
                     />
                 </div>
-                <hr style={{ marginBottom: 80 }}/>
                 <div className="d-flex flex-column">
                     <ul className="d-flex flex-column" style={{ marginBottom: 60 }}>
                         {

@@ -11,7 +11,8 @@
 
 .itemfocused,
 .itemContainer:hover {
-    border: 1px solid whitesmoke;
+    font-style: italic;
+    border: 4px solid grey;
 }
 
 .itemLogo {
