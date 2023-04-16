@@ -16,13 +16,6 @@
     border: 4px solid grey;
 }
 
-.itemLogo {
-    width: 80%;
-    height: 60%;
-    object-fit: contain;
-    margin-bottom: 10px;
-}
-
 .itemCoverLogo {
     width: 100%;
     height: 100%;

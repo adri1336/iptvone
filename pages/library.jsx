@@ -197,8 +197,11 @@ const StartPage = ({ playItem, onPlay }) => {
                                 <Keyboard
                                     forRef={ activeRef }
                                     onFocus={ () => {
-                                        setLastFocused(getCurrentFocusKey());
-                                        setKeyboardFocused(true);
+                                        if(lastFocused === 'change_url') setFocus('group_start');
+                                        else {
+                                            setLastFocused('keyboard');
+                                            setKeyboardFocused(true);
+                                        }
                                     } }
                                     onBlur={ () => setKeyboardFocused(false) }/>
                                 <form className="ml-10" style={{ width: 600 }} onSubmit={ handleSearch }>
@@ -246,6 +249,10 @@ const GroupPage = ({ selectedGroupIndex, onPlay }) => {
             }
         }
     });
+
+    useEffect(() => {
+        setLastFocused('item_0');
+    }, [selectedGroupIndex]);
     
     return (
         <div ref={ ref } className="mpage">
