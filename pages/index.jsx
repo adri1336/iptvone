@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 export default () => {
 	const router = useRouter();
 	const { t } = useTranslation('common');
-	const { focusKey, focusSelf } = useFocusable({});
+	const { focusKey, setFocus, focusSelf } = useFocusable({});
 
 	const [ keyboardFocused, setKeyboardFocused ] = useState(false);
 	const [ activeRef, setActiveRef ] = useState(null);
@@ -68,7 +68,7 @@ export default () => {
 	};
 
     useEffect(() => {
-        focusSelf();
+        setFocus('keyboard');
     }, [focusSelf]);
 
 	useEffect(() => {

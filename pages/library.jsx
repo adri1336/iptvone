@@ -21,7 +21,7 @@ export default () => {
     
     useEffect(() => {
         if(typeof window !== 'undefined') {
-            window.scrollTo(0, -100);
+            window.scrollTo({ top: -100, behavior: 'instant' });
         }
     }, [selectedGroupIndex]);
 
