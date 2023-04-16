@@ -11,6 +11,7 @@
 .li:hover {
     font-style: italic;
     border-bottom: 4px solid grey;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .liselected {

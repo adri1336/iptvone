@@ -7,14 +7,15 @@ import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-naviga
 import { loader } from "@/components/loader/loader";
 import { toast } from 'react-toastify';
 
-const Control = ({ icon, text, onClick, setControls }) => {
+const Control = ({ icon, text, onClick, setControls, focusKey }) => {
     const { ref, focused } = useFocusable({
         onEnterPress: () => {
             setControls(control => control + 1);
             if(onClick)
             onClick();
         },
-        onFocus: () => setControls(control => control + 1)
+        onFocus: () => setControls(control => control + 1),
+        focusKey: focusKey
     });
 
     return (
@@ -40,7 +41,7 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
     }, [controls]);
 
     const { t } = useTranslation('common');
-    const { ref, focusKey, focusSelf } = useFocusable({
+    const { ref, focusKey, focusSelf, setFocus } = useFocusable({
         onFocus: () => {
             setControls(control => control + 1);
         },
@@ -51,7 +52,7 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
     });
 
     useEffect(() => {
-        focusSelf();
+        setFocus('play-pause');
     }, [focusSelf]);
 
     let durationString = "";
@@ -79,31 +80,37 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
                             text={ '-20m' }
                             onClick={ () => onAction('seek:-20m') }
                             setControls={ setControls }
+                            focusKey={ 'seek-20m' }
                         />
                         <Control
                             text={ '-5m' }
                             onClick={ () => onAction('seek:-5m') }
                             setControls={ setControls }
+                            focusKey={ 'seek-5m' }
                         />
                         <Control
                             text={ '-30s' }
                             onClick={ () => onAction('seek:-30s') }
                             setControls={ setControls }
+                            focusKey={ 'seek-30s' }
                         />
                         <Control
                             text={ '+30s' }
                             onClick={ () => onAction('seek:+30s') }
                             setControls={ setControls }
+                            focusKey={ 'seek+30s' }
                         />
                         <Control
                             text={ '+5m' }
                             onClick={ () => onAction('seek:+5m') }
                             setControls={ setControls }
+                            focusKey={ 'seek+5m' }
                         />
                         <Control
                             text={ '+20m' }
                             onClick={ () => onAction('seek:+20m') }
                             setControls={ setControls }
+                            focusKey={ 'seek+20m' }
                         />
                     </div>
                 }
@@ -118,6 +125,7 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
                                 text={ t('COMPONENTS.PLAYER.PAUSE') }
                                 onClick={ () => onAction('pause') }
                                 setControls={ setControls }
+                                focusKey={ 'play-pause' }
                             />
                         :
                             <Control
@@ -125,6 +133,7 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
                                 text={ t('COMPONENTS.PLAYER.PLAY') }
                                 onClick={ () => onAction('play') }
                                 setControls={ setControls }
+                                focusKey={ 'play-pause' }
                             />
                     }
                     {
@@ -134,6 +143,7 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
                             text={ t('COMPONENTS.PLAYER.REPLAY') }
                             onClick={ () => onAction('replay') }
                             setControls={ setControls }
+                            focusKey={ 'replay' }
                         />
                     }
                 </div>
@@ -142,6 +152,7 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
                     text={ t('COMPONENTS.PLAYER.EXIT') }
                     onClick={ () => onAction('close') }
                     setControls={ setControls }
+                    focusKey={ 'close' }
                 />
             </div>
         </div>

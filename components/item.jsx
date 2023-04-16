@@ -3,10 +3,11 @@ import IPTV from "@/utils/iptv";
 import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { useState } from "react";
 
-const Item = ({ item, onSelected }) => {
+const Item = ({ item, onSelected, focusKey }) => {
     const { ref, focused } = useFocusable({
         onEnterPress: () => onSelected(),
-        onFocus: () => ref?.current && ref.current.scrollIntoView({ behavior: "smooth", block: "center" })
+        onFocus: () => ref?.current && ref.current.scrollIntoView({ behavior: "smooth", block: "center" }),
+        focusKey: focusKey,
     });
 
     const raw = item.raw;

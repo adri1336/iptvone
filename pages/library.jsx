@@ -14,7 +14,8 @@ import FlatList from "flatlist-react";
 
 export default () => {
     const { t } = useTranslation('common');
-    const { focusKey, focusSelf } = useFocusable({});
+    const { focusKey, focusSelf, setFocus, getCurrentFocusKey } = useFocusable({});
+    const [ lastFocused, setLastFocused ] = useState(null);
     const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(-1);
     const [ playItem, setPlayItem ] = useState(null);
     const [ lastItems, setLastItems ] = useState([]);
@@ -31,6 +32,11 @@ export default () => {
         if(inputSearchRef?.current) {
             inputSearchRef.current.value = '';
         }
+        
+        if(typeof window !== 'undefined')
+        window.scrollTo(0, -100);
+
+        setFocus('item_0');
     }, [selectedGroupIndex]);
 
     useEffect(() => {
@@ -44,19 +50,23 @@ export default () => {
     }, [IPTV.getURL()])
 
     useEffect(() => {
-        focusSelf();
+        setFocus('item_0');
     }, [focusSelf]);
 
     useEffect(() => {
         if(typeof window !== 'undefined'){
             const items = localStorage.getItem('LAST_ITEMS');
             if(items) setLastItems(JSON.parse(items));
+
+            window.scrollTo(0, -100);
         }
     }, []);
 
     //save last 30 items in localstorage
     useEffect(() => {
         if(playItem) {
+            setLastFocused(getCurrentFocusKey());
+            
             const items = localStorage.getItem('LAST_ITEMS');
             let tmpLastItems = [], exists = false;
             if(items) {
@@ -77,6 +87,10 @@ export default () => {
                 if(item?.playedSeconds && item.playedSeconds > 0)
                 setPlayedSeconds(item.playedSeconds);
             }
+        }
+        else {
+            if(lastFocused)
+            setFocus(lastFocused);
         }
     }, [playItem]);
 
@@ -131,7 +145,7 @@ export default () => {
                             <div className="d-flex flex-column m-30">
                                 <span className="text-medium fw-bold">{ t('COMMON.INFO') }</span>
                                 <span className="text-small">{ t('PAGES.LIBRARY.INFO', { items: IPTV.getItems().length, groups: IPTV.getGroups().length, url: IPTV.getURL() }) }</span>
-                                <Button type="button" className="dark-button" onClick={ () => Router.replace('/?change=true') }>{ t('PAGES.LIBRARY.CHANGE_URL') }</Button>
+                                <Button focusKey={ 'item_0' } type="button" className="dark-button" onClick={ () => Router.replace('/?change=true') }>{ t('PAGES.LIBRARY.CHANGE_URL') }</Button>
                             </div>
 
                             <div className="d-flex flex-column m-30">
@@ -201,6 +215,7 @@ export default () => {
                                                 key={ index }
                                                 item={ item }
                                                 onSelected={ () => setPlayItem(item) }
+                                                focusKey={ `item_${ index }` }
                                             />
                                         }
                                     }
