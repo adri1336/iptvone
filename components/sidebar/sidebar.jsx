@@ -7,13 +7,21 @@ import { useTranslation } from 'next-i18next';
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
 
 const Sidebar = ({ onGroupSelected }) => {
+    const [ lastFocused, setLastFocused ] = useState('group_start');
     const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(-1);
     const { t } = useTranslation('common');
-    const { ref, focusKey, focusSelf } = useFocusable({});
+    const { ref, focusKey, focusSelf, setFocus, getCurrentFocusKey } = useFocusable({
+        onFocus: () => {
+            if(getCurrentFocusKey() !== lastFocused) {
+                setFocus(lastFocused);
+            }
+        }
+    });
 
     useEffect(() => {
-        focusSelf();
+        setFocus('group_start');
     }, [focusSelf]);
+
 
     return (<FocusContext.Provider value={ focusKey }>
         <div ref={ ref } className={ styles.sidebarContainer }>
@@ -31,6 +39,8 @@ const Sidebar = ({ onGroupSelected }) => {
                             if(onGroupSelected)
                             onGroupSelected(-1);
                         }}
+                        focusKey={ 'group_start' }
+                        onFocus={ () => setLastFocused('group_start') }
                     />
                 </div>
                 <div className="d-flex flex-column">
@@ -46,6 +56,8 @@ const Sidebar = ({ onGroupSelected }) => {
                                         if(onGroupSelected)
                                         onGroupSelected(index);
                                     }}
+                                    focusKey={ 'group_' + index }
+                                    onFocus={ () => setLastFocused('group_' + index) }
                                 />
                             })
                         }

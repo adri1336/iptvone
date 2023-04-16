@@ -7,7 +7,13 @@ const Button = (props) => {
             if(buttonRef?.current)
             buttonRef.current.click();
         },
-        onFocus: () => ref?.current && ref.current.scrollIntoView({ behavior: "smooth", block: "center" }),
+        onFocus: () => {
+            if(props?.onFocus)
+            props.onFocus();
+            
+            if(ref?.current)
+            ref.current.scrollIntoView({ behavior: "smooth", block: "center" })
+        },
         focusKey: props?.focusKey,
     });
 

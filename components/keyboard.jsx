@@ -34,7 +34,7 @@ const Key = ({ keyId, keyText, onKeyPressed }) => {
 };
 
 const Keyboard = ({ forRef = null, onKeyPressed, onFocus, onBlur }) => {
-    const { ref, focusKey, focusSelf } = useFocusable({
+    const { ref, focusKey } = useFocusable({
         onFocus: () => {
             if(onFocus)
             onFocus();
@@ -42,12 +42,9 @@ const Keyboard = ({ forRef = null, onKeyPressed, onFocus, onBlur }) => {
         onBlur: () => {
             if(onBlur)
             onBlur();
-        }
+        },
+        focusKey: 'keyboard'
     });
-
-    useEffect(() => {
-        focusSelf();
-    }, [focusSelf]);
 
     const normalKeys = [
         ["a", "b", "c", "d", "e", "f"],
