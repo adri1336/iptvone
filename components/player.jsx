@@ -4,6 +4,8 @@ import styles from "@/styles/player.module.css";
 import { FaPlay, FaPause, FaRedoAlt, FaSignInAlt } from "react-icons/fa";
 import { useTranslation } from 'next-i18next';
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
+import { loader } from "@/components/loader/loader";
+import { toast } from 'react-toastify';
 
 const Control = ({ icon, text, onClick, setControls }) => {
     const { ref, focused } = useFocusable({
@@ -155,8 +157,10 @@ const Player = (props) => {
     const playerRef = createRef();
 
     useEffect(() => {
-        if(typeof window !== 'undefined')
-        setWindowLoaded(true);
+        if(typeof window !== 'undefined') {
+            setWindowLoaded(true);
+            loader(true, { opacity: 0.1 });
+        }
     }, []);
 
     useEffect(() => {
@@ -245,6 +249,14 @@ const Player = (props) => {
 
                     setDuration(duration);
                 } }
+                onBuffer={ () => loader(true, { opacity: 0.1 }) }
+                onBufferEnd={ () => loader(false) }
+                onError={
+                    (error) => {
+                        loader(false);
+                        toast.error(error.message);
+                    }
+                }
             />
         </div>
     );
