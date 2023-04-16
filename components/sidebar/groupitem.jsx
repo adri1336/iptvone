@@ -9,7 +9,7 @@ const GroupItem = ({ name, selected, onSelected, focusKey, onFocus }) => {
             onFocus();
 
             if(ref?.current)
-            ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+            ref.current.scrollIntoView({ behavior: "instant", block: "center" });
         },
         focusKey: focusKey
     });

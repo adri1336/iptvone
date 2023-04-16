@@ -15,24 +15,31 @@ const Item = ({ item, onSelected, focusKey, onFocus }) => {
             onFocus();
             
             if(ref?.current)
-            ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+            ref.current.scrollIntoView({ behavior: "instant", block: "center" });
         },
         focusKey: focusKey,
     });
 
     
-    useEffect(() => {
-        if(inView && !renderImage) {
-            const raw = item.raw;
-            const image = IPTV.getRawValue(raw, "tvg-logo");
-            if(image) {
-                const img = new Image();
-                img.src = image;
-                img.onload = () => setRenderImage(image);
-            }
+    const loadItemImage = () => {
+        const raw = item.raw;
+        const image = IPTV.getRawValue(raw, "tvg-logo");
+        if(image) {
+            const img = new Image();
+            img.src = image;
+            img.onload = () => setRenderImage(image);
         }
+    };
+
+    useEffect(() => {
+        if(inView && !renderImage) loadItemImage();
         else if(!inView && renderImage) setRenderImage(null);
     }, [inView]);
+
+    useEffect(() => {
+        if(inView && renderImage)
+        loadItemImage();
+    }, [item]);
     
     if(!renderImage) {
         return (<div ref={ viewRef }>

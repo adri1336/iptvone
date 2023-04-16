@@ -33,7 +33,8 @@
             "LAST_PLAYED": "Últimos reproducidos",
             "CHANGE_URL": "Cambiar URL",
             "DELETE_HISTORY": "Borrar historial",
-            "CLEAR_SEARCH": "Limpiar búsqueda"
+            "CLEAR_SEARCH": "Limpiar búsqueda",
+            "NO_ITEMS_FOUND": "No se han encontrado elementos."
         }
     }
 }

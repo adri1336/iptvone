@@ -171,6 +171,16 @@ const Player = (props) => {
         if(typeof window !== 'undefined') {
             setWindowLoaded(true);
             loader(true, { opacity: 0.1 });
+
+            window.addEventListener("keydown", e => {
+                const keyCode = e.keyCode || e.which;
+                if(keyCode ===  461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */ || keyCode === 27 /* Esc */) {
+                    if(props.onClose) {
+                        loader(false);
+                        props.onClose();
+                    }
+                }
+            });
         }
     }, []);
 
@@ -196,8 +206,10 @@ const Player = (props) => {
                 setPlaying(false);
                 break;
             case 'close':
-                if(props.onClose)
-                props.onClose();
+                if(props.onClose) {
+                    loader(false);
+                    props.onClose();
+                }
                 break;
             case 'seek:-20m':
                 playerRef.current.seekTo(playerRef.current.getCurrentTime() - 1200);
@@ -251,8 +263,10 @@ const Player = (props) => {
                 } }
                 onSeek={ () => !playing && setPlaying(true) }
                 onEnded={ () => {
-                    if(props.onClose)
-                    props.onClose();
+                    if(props.onClose) {
+                        loader(false);
+                        props.onClose();
+                    }
                 }}
                 onDuration={ (duration) => {
                     if(!props.playedSeconds && !playing)

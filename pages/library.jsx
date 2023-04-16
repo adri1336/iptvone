@@ -11,6 +11,7 @@ import Keyboard from "@/components/keyboard";
 import Input from "@/components/input";
 import Button from "@/components/button";
 import FlatList from "flatlist-react";
+import { toast } from 'react-toastify';
 
 export default () => {
     const { focusKey, focusSelf, setFocus, getCurrentFocusKey } = useFocusable({});
@@ -148,8 +149,10 @@ const StartPage = ({ playItem, onPlay }) => {
             const value = inputSearchRef.current.value;
             if(value.length > 0) {
                 const items = IPTV.getItems();
-                const found = items.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
-                setFoundItems(found);
+                const searchValue = value.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+                const found = items.filter(item => item.name.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(searchValue));
+                if(found.length > 0) setFoundItems(found);
+                else toast.error(t('PAGES.LIBRARY.NO_ITEMS_FOUND'));
             }
         }
     };
@@ -169,7 +172,7 @@ const StartPage = ({ playItem, onPlay }) => {
                         setLastItems([]);
                         localStorage.removeItem('LAST_ITEMS');
                     } }>{ t('PAGES.LIBRARY.DELETE_HISTORY') }</Button>
-                    <div className="d-flex flex-wrap">
+                    <div className="d-flex flex-wrap justify-content-center">
                         <FlatList
                             renderOnScroll
                             renderWhenEmpty={ () => <></> }
@@ -213,7 +216,7 @@ const StartPage = ({ playItem, onPlay }) => {
                             </div> :
                             <>
                                 <Button focusKey={ 'clear_search' } onFocus={ () => setLastFocused('clear_search') } type="button" className="dark-button" onClick={ () => setFoundItems([]) }>{ t('PAGES.LIBRARY.CLEAR_SEARCH') }</Button>
-                                <div className="d-flex flex-wrap mt-10">
+                                <div className="d-flex flex-wrap justify-content-center mt-10">
                                     <FlatList
                                         renderOnScroll
                                         renderWhenEmpty={ () => <></> }
