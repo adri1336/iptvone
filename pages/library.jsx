@@ -12,6 +12,7 @@ import Input from "@/components/input";
 import Button from "@/components/button";
 import FlatList from "flatlist-react";
 import { toast } from 'react-toastify';
+import LanguageSwitcher from "@/components/languageswitcher";
 
 export default () => {
     const { focusKey, focusSelf, setFocus, getCurrentFocusKey } = useFocusable({});
@@ -369,11 +370,14 @@ const StartPage = ({ playItem, onPlay }) => {
 
     return (
         <div ref={ ref } className="mpage">
-            <div className="d-flex flex-column">
+            <div className="d-flex flex-column" style={{ marginTop: 80 }}>
                 <div className="d-flex flex-column m-30">
                     <span className="text-medium fw-bold">{ t('COMMON.INFO') }</span>
                     <span className="text-small">{ t('PAGES.LIBRARY.INFO', { items: IPTV.getItems().length, groups: IPTV.getGroups().length, url: IPTV.getURL() }) }</span>
                     <Button focusKey={ 'change_url' } onFocus={ () => setLastFocused('change_url') } type="button" className="dark-button" onClick={ () => Router.replace('/?change=true') }>{ t('PAGES.LIBRARY.CHANGE_URL') }</Button>
+                    <div className='languageSwitcherContainer'>
+                        <LanguageSwitcher/>
+                    </div>
                 </div>
 
                 <div className="d-flex flex-column m-30">

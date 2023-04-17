@@ -1,0 +1,18 @@
+.container {
+    width: 100%;
+    height: 60px;
+    background-color: #353535;
+    border: 2px solid whitesmoke;
+    cursor: pointer;
+}
+
+.containerFocused,
+.container:hover {
+    border: 4px solid whitesmoke;
+    font-style: italic;
+}
+
+.containerFocused > span,
+.container:hover > span {
+    border-bottom: 2px solid whitesmoke;
+}

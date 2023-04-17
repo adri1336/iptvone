@@ -1,0 +1,49 @@
+{
+    "COMPONENTS": {
+        "KEYBOARD": {
+            "SPACE": "Space",
+            "BACKSPACE": "Backspace",
+            "CLEAR": "Clear"
+        },
+        "PLAYER": {
+            "PLAY": "Play",
+            "REPLAY": "Restart",
+            "PAUSE": "Pause",
+            "EXIT": "Exit"
+        },
+        "SIDEBAR": {
+            "START": "Start"
+        }
+    },
+    "COMMON": {
+        "M3U_URL": "M3U URL",
+        "CONTINUE": "Continue",
+        "URL": "URL",
+        "INFO": "Information",
+        "TITLE": "Title",
+        "SEASON": "Season",
+        "EPISODE": "Episode",
+        "TIME": "Time",
+        "PLAY": "Play",
+        "LANGUAGE": "Language"
+    },
+    "PAGES": {
+        "M3U": {
+            "LOAD_MESSAGE": "We are checking if you already have a loaded M3U list...",
+            "LOAD_ERROR": "The M3U list could not be loaded."
+        },
+        "LIBRARY": {
+            "INFO": "Elements: {{items}} - Groups: {{groups}} - URL: {{url}}",
+            "SEARCH": "Search",
+            "LAST_PLAYED": "Last Played",
+            "CHANGE_URL": "Change URL",
+            "DELETE_HISTORY": "Clear history",
+            "CLEAR_SEARCH": "Clear search",
+            "NO_ITEMS_FOUND": "No items founds.",
+            "GO_BACK": "Go back",
+            "CURRENT_PROGRESS": "Current progress",
+            "NO_PROGRESS": "Not started",
+            "TOTAL_EPISODES": "{{episodes}} episodes"
+        }
+    }
+}

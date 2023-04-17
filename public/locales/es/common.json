@@ -24,7 +24,8 @@
         "SEASON": "Temporada",
         "EPISODE": "Episodio",
         "TIME": "Tiempo",
-        "PLAY": "Reproducir"
+        "PLAY": "Reproducir",
+        "LANGUAGE": "Idioma"
     },
     "PAGES": {
         "M3U": {

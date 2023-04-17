@@ -13,6 +13,7 @@ import parser from "iptv-playlist-parser";
 import IPTV from "@/utils/iptv";
 import Router from "next/router";
 import { useRouter } from 'next/router';
+import LanguageSwitcher from "@/components/languageswitcher";
 
 export default () => {
 	const router = useRouter();
@@ -23,6 +24,13 @@ export default () => {
 	const [ activeRef, setActiveRef ] = useState(null);
 	const [ inputUrlValue, setInputUrlValue ] = useState('');
 	const inputUrlRef = useRef();
+
+	useEffect(() => {
+		if(typeof window !== 'undefined') {
+			const lang = localStorage.getItem('LANGUAGE');
+			if(lang) router.push(router.asPath, router.asPath, { locale: lang });
+		}
+	}, []);
 
 	useEffect(() => {
 		if(router.isReady && typeof window !== 'undefined') {
@@ -86,6 +94,9 @@ export default () => {
 
 	return (<FocusContext.Provider value={ focusKey }>
 		<div className="page d-flex flex-column justify-content-center align-items-center">
+			<div className='languageSwitcherContainer'>
+				<LanguageSwitcher/>
+			</div>
 			<span className="title-small fw-bold">{ ENV.APP_NAME }</span>
 			<span className="text-small fw-bold">{ ENV.APP_WEB }</span>
 			<span className="text-small mb-30" style={{ fontSize: '10pt' }}>({ ENV.APP_VERSION })</span>
