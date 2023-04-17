@@ -2,6 +2,7 @@
 * {
 	color: whitesmoke;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	scroll-behavior: auto !important;
 }
 
 .page {

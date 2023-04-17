@@ -31,6 +31,7 @@ const PlayerControls = ({ playerProps, onAction, isStream, duration, progress })
     useEffect(() => {
         if(controls > 0) {
             const timer = window.setInterval(() => {
+                setFocus('play-pause');
                 setControls(0);
             }, 6000);
 

@@ -172,7 +172,7 @@ const StartPage = ({ playItem, onPlay }) => {
                         setLastItems([]);
                         localStorage.removeItem('LAST_ITEMS');
                     } }>{ t('PAGES.LIBRARY.DELETE_HISTORY') }</Button>
-                    <div className="d-flex flex-wrap justify-content-center">
+                    <div className="d-flex flex-wrap justify-content-start">
                         <FlatList
                             renderOnScroll
                             renderWhenEmpty={ () => <></> }
@@ -216,7 +216,7 @@ const StartPage = ({ playItem, onPlay }) => {
                             </div> :
                             <>
                                 <Button focusKey={ 'clear_search' } onFocus={ () => setLastFocused('clear_search') } type="button" className="dark-button" onClick={ () => setFoundItems([]) }>{ t('PAGES.LIBRARY.CLEAR_SEARCH') }</Button>
-                                <div className="d-flex flex-wrap justify-content-center mt-10">
+                                <div className="d-flex flex-wrap justify-content-start mt-10">
                                     <FlatList
                                         renderOnScroll
                                         renderWhenEmpty={ () => <></> }
@@ -243,7 +243,32 @@ const StartPage = ({ playItem, onPlay }) => {
 };
 
 const GroupPage = ({ selectedGroupIndex, onPlay }) => {
-    const items = (IPTV.getItems()).filter(item => item.group.title === (IPTV.getGroups())[selectedGroupIndex]);
+    let items = (IPTV.getItems()).filter(item => item.group.title === (IPTV.getGroups())[selectedGroupIndex]);
+    //agrupar items que sean series (SxxExx) en una sola entrada
+    const groupedItems = [];
+    items.forEach(item => {
+        const match = item.name.match(/S(\d+)E(\d+)/);
+        if(match) {
+            const tvName = item.name.replace(/S(\d+)E(\d+)/, '').trim();
+            const season = parseInt(match[1]);
+            const episode = parseInt(match[2]);
+            const found = groupedItems.find(item => item.name.replace(/S(\d+)E(\d+)/, '').trim() === tvName);
+            if(found) {
+                found.isCollection = true;
+                found.episodes.push({ season, episode, url: item.url, logo: item?.logo });
+            } else {
+                groupedItems.push({
+                    ...item,
+                    name: tvName,
+                    episodes: [{ season, episode, url: item.url, logo: item?.logo }],
+                });
+            }
+        } else {
+            groupedItems.push(item);
+        }
+    });
+    items = groupedItems;
+
     const [ lastFocused, setLastFocused ] = useState('item_0');
     const { ref, setFocus, getCurrentFocusKey } = useFocusable({
         onFocus: () => {
