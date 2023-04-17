@@ -33,6 +33,19 @@ export default () => {
     }, []);
 
     useEffect(() => {
+
+        if(typeof window !== 'undefined' && !collection && selectedGroupIndex > -1) {
+            const handleKeyDown = (e) => {
+                const keyCode = e.keyCode || e.which;
+                if(keyCode ===  461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */)
+                setSelectedGroupIndex(-1);
+            };
+            window.addEventListener("keydown", handleKeyDown);
+            return () => window.removeEventListener("keydown", handleKeyDown);
+        }
+    }, [collection, selectedGroupIndex]);
+
+    useEffect(() => {
         if(typeof window !== 'undefined') {
             window.scrollTo({ top: -100, behavior: 'instant' });
         }
@@ -191,6 +204,18 @@ const CollectionPage = ({ collection, onBack, playItem, onPlay }) => {
     const { ref, focusSelf, setFocus } = useFocusable({
         isFocusBoundary: true
     });
+
+    useEffect(() => {
+        if(typeof window !== 'undefined') {
+            const handleKeyDown = (e) => {
+                const keyCode = e.keyCode || e.which;
+                if(keyCode ===  461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */)
+                onBack();
+            };
+            window.addEventListener("keydown", handleKeyDown);
+            return () => window.removeEventListener("keydown", handleKeyDown);
+        }
+    }, []);
 
     useEffect(() => {
         setFocus('go_back');

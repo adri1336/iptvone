@@ -30,9 +30,10 @@
     align-items: flex-end;
     justify-content: center;
     padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-.itemCoverTitle > span {
+/*.itemCoverTitle > span {
     color: transparent;
 }
 
@@ -44,4 +45,4 @@
 .itemfocused > .itemCoverTitle > span,
 .itemContainer:hover > .itemCoverTitle > span {
     color: white;
-}
+}*/

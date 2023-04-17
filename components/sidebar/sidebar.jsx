@@ -25,6 +25,7 @@ const Sidebar = ({ onGroupSelected, selectedIndex = -1 }) => {
     useEffect(() => {
         if(selectedIndex === -1) setFocus('group_start');
         else setFocus('group_' + selectedIndex);
+        setSelectedGroupIndex(selectedIndex);
     }, [selectedIndex]);
 
 
