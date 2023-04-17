@@ -49,25 +49,31 @@ export default () => {
 	const loadPlaylist = async url => {
 		const res = await fetch(url);
 		if(res.ok) {
-			//convertir la lista de canales a json
-			const m3u = await res.text();
-			const list = parser.parse(m3u);
-			
-			//extraer todos los grupos de la lista de canales
-			let groups = [];
-			list.items.forEach(item => {
-				if(item?.group?.title && !groups.includes(item.group.title))
-				groups.push(item.group.title);
-			});
+			try {
+				//convertir la lista de canales a json
+				const m3u = await res.text();
+				const list = parser.parse(m3u);
+				
+				//extraer todos los grupos de la lista de canales
+				let groups = [];
+				list.items.forEach(item => {
+					if(item?.group?.title && !groups.includes(item.group.title))
+					groups.push(item.group.title);
+				});
 
-			//establecer los grupos y los canales
-			IPTV.setURL(url);
-			IPTV.setGroups(groups);
-			IPTV.setItems(list.items);
+				//establecer los grupos y los canales
+				IPTV.setURL(url);
+				IPTV.setGroups(groups);
+				IPTV.setItems(list.items);
 
-			//redireccionar a la página de canales
-			loader(false);
-			Router.replace( "/library");
+				//redireccionar a la página de canales
+				loader(false);
+				Router.replace( "/library");
+			}
+			catch(e) {
+				loader(false);
+				toast.error(t('PAGES.M3U.LOAD_ERROR'));
+			}
 		}
 		else {
 			loader(false);
