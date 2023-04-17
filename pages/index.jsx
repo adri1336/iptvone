@@ -44,7 +44,7 @@ export default () => {
 				else loader(false);
 			}
 		}
-    }, [router.query]);
+    }, [router.isReady]);
 
 	const loadPlaylist = async url => {
 		const res = await fetch(url);
