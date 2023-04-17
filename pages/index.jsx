@@ -49,7 +49,7 @@ export default () => {
 		try {
 			const res = await fetch(url, {
 				method: 'GET',
-				mode: 'cors'
+				mode: 'no-cors'
 			});
 			if(res.ok) {
 				try {
