@@ -49,7 +49,7 @@ export default () => {
 		try {
 			const res = await fetch(url, {
 				method: 'GET',
-				mode: 'no-cors'
+				mode: 'cors'
 			});
 			if(res.ok) {
 				try {
@@ -84,6 +84,7 @@ export default () => {
 			}
 		}
 		catch(e) {
+			console.log("Error: ", e)
 			loader(false);
 			toast.error(t('PAGES.M3U.LOAD_ERROR'));
 		}
