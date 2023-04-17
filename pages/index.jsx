@@ -47,7 +47,10 @@ export default () => {
 
 	const loadPlaylist = async url => {
 		try {
-			const res = await fetch(url);
+			const res = await fetch(url, {
+				method: 'GET',
+				mode: 'cors'
+			});
 			if(res.ok) {
 				try {
 					//convertir la lista de canales a json
