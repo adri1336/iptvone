@@ -32,8 +32,8 @@ const Sidebar = ({ onGroupSelected, selectedIndex = -1 }) => {
         <div ref={ ref } className={ styles.sidebarContainer }>
             <div className="d-flex flex-column h-100">
                 <div className="d-flex flex-column">
-                    <span className="title-small fw-bold">{ ENV.APP_NAME }</span>
-                    <span className="text-small">{ ENV.APP_VERSION }</span>
+                    <span className="title-small fw-bold">{ ENV.APP_NAME } <span className="text-small" style={{ fontSize: '10pt' }}>({ ENV.APP_VERSION })</span></span>
+                    <span className="text-small fw-bold">{ ENV.APP_WEB }</span>
                 </div>
                 <div className="d-flex flex-column" style={{ marginTop: 60, marginBottom: 60 }}>
                     <GroupItem

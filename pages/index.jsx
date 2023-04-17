@@ -87,7 +87,8 @@ export default () => {
 	return (<FocusContext.Provider value={ focusKey }>
 		<div className="page d-flex flex-column justify-content-center align-items-center">
 			<span className="title-small fw-bold">{ ENV.APP_NAME }</span>
-			<span className="text-small fw-bold mb-30">{ ENV.APP_VERSION }</span>
+			<span className="text-small fw-bold">{ ENV.APP_WEB }</span>
+			<span className="text-small mb-30" style={{ fontSize: '10pt' }}>({ ENV.APP_VERSION })</span>
 			<div className="d-flex flex-row">
 				<div className="m-30"><Keyboard forRef={ activeRef } onFocus={ () => setKeyboardFocused(true) } onBlur={ () => setKeyboardFocused(false) }/></div>
 				<form className="m-30" style={{ width: 800 }} onSubmit={ handleSubmit }>
