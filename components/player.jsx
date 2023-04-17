@@ -168,33 +168,6 @@ const Player = (props) => {
     const [ duration, setDuration ] = useState(null);
     const playerRef = createRef();
 
-    useEffect(() => {
-        if(typeof window !== 'undefined') {
-            setWindowLoaded(true);
-            loader(true, { opacity: 0.1 });
-
-            window.addEventListener("keydown", e => {
-                const keyCode = e.keyCode || e.which;
-                if(keyCode ===  461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */ || keyCode === 27 /* Esc */) {
-                    if(props.onClose) {
-                        loader(false);
-                        props.onClose();
-                    }
-                }
-            });
-        }
-    }, []);
-
-    useEffect(() => {
-        if(progress === null && duration && !playing && playerRef?.current && props.playedSeconds > 0) {
-            if(duration > props.playedSeconds)
-            playerRef.current.seekTo(props.playedSeconds);
-        }
-    }, [playerRef, props.playedSeconds, duration]);
-
-    if(!windowLoaded)
-    return <></>;
-
     const handleControlAction = (action) => {
         let newSeconds = 0;
         switch(action) {
@@ -245,6 +218,43 @@ const Player = (props) => {
                 break;
         }
     };
+
+    useEffect(() => {
+        if(typeof window !== 'undefined') {
+            setWindowLoaded(true);
+            loader(true, { opacity: 0.1 });
+        }
+    }, []);
+
+    useEffect(() => {
+        if(typeof window !== 'undefined') {
+            const handleKeyDown = (e) => {
+                const keyCode = e.keyCode || e.which;
+                if(keyCode ===  461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */ || keyCode === 27 /* Esc */) {
+                    if(props.onClose) {
+                        loader(false);
+                        props.onClose();
+                    }
+                }
+                else if(keyCode === 32 /* Space */) {
+                    if(playing) handleControlAction('pause');
+                    else handleControlAction('play');
+                }
+            };
+            window.addEventListener("keydown", handleKeyDown);
+            return () => window.removeEventListener("keydown", handleKeyDown);
+        }
+    }, [playing]);
+
+    useEffect(() => {
+        if(progress === null && duration && !playing && playerRef?.current && props.playedSeconds > 0) {
+            if(duration > props.playedSeconds)
+            playerRef.current.seekTo(props.playedSeconds);
+        }
+    }, [playerRef, props.playedSeconds, duration]);
+
+    if(!windowLoaded)
+    return <></>;
 
     return (
         <div className={ styles.container } style={{ width: props.width, height: props.height }}>
