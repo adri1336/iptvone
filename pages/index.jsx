@@ -36,12 +36,11 @@ export default () => {
 		if(router.isReady && typeof window !== 'undefined') {
 			const { change } = router.query;
 
-			const URL = localStorage.getItem('M3U_URL');
-			setInputUrlValue(URL);
-			if(!change) {
-				loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });				
-				if(URL) loadPlaylist(URL);
-				else loader(false);
+			const url = localStorage.getItem('M3U_URL');
+			setInputUrlValue(url);
+			if(!change && url) {
+				loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE') + ' ' + url, opacity: 1.0, logo: true });				
+				loadPlaylist(url);
 			}
 		}
     }, [router.isReady]);
