@@ -6,6 +6,8 @@ import { init } from "@noriginmedia/norigin-spatial-navigation";
 import Loader from "@/components/loader/loaderContainer";
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import Head from 'next/head';
+import ENV from '@/utils/env';
 
 const App = ({ Component, pageProps }) => {
 	init({});
@@ -15,6 +17,10 @@ const App = ({ Component, pageProps }) => {
 	}, []);
 
 	return <>
+		<Head>
+			<title>{ ENV.APP_NAME }</title>
+			<link rel="shortcut icon" href="/favicon.ico" />
+		</Head>
 		<Loader/>
 		<Component {...pageProps} />
 		<ToastContainer theme="dark"/>
