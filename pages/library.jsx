@@ -33,16 +33,16 @@ export default () => {
     }, []);
 
     useEffect(() => {
-        if(typeof window !== 'undefined' && !collection && selectedGroupIndex > -1) {
+        if(typeof window !== 'undefined' && !collection && !playItem && selectedGroupIndex > -1) {
             const handleKeyDown = (e) => {
                 const keyCode = e.keyCode || e.which;
-                if(keyCode ===  461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */ || keyCode === 27 /* Esc */)
+                if(keyCode === 461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */ || keyCode === 27 /* Esc */)
                 setSelectedGroupIndex(-1);
             };
             window.addEventListener("keydown", handleKeyDown);
             return () => window.removeEventListener("keydown", handleKeyDown);
         }
-    }, [collection, selectedGroupIndex]);
+    }, [collection, playItem, selectedGroupIndex]);
 
     useEffect(() => {
         if(typeof window !== 'undefined') {
@@ -208,7 +208,7 @@ const CollectionPage = ({ collection, onBack, playItem, onPlay }) => {
         if(typeof window !== 'undefined' && !playItem) {
             const handleKeyDown = (e) => {
                 const keyCode = e.keyCode || e.which;
-                if(keyCode ===  461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */ || keyCode === 27 /* Esc */)
+                if(keyCode === 461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */ || keyCode === 27 /* Esc */)
                 onBack();
             };
             window.addEventListener("keydown", handleKeyDown);

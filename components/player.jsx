@@ -230,7 +230,7 @@ const Player = (props) => {
         if(typeof window !== 'undefined') {
             const handleKeyDown = (e) => {
                 const keyCode = e.keyCode || e.which;
-                if(keyCode ===  461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */ || keyCode === 27 /* Esc */) {
+                if(keyCode === 461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */ || keyCode === 27 /* Esc */) {
                     if(props.onClose) {
                         loader(false);
                         props.onClose();
