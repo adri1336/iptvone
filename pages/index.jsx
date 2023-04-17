@@ -88,8 +88,14 @@ export default () => {
 		e.preventDefault();
 		loader(true);
 		const url = inputUrlRef.current.value;
-		localStorage.setItem('M3U_URL', url);
-		loadPlaylist(url);
+		if(url) {
+			localStorage.setItem('M3U_URL', url);
+			loadPlaylist(url);
+		}
+		else {
+			loader(false);
+			toast.error(t('PAGES.M3U.INVALID_URL'));
+		}
 	};
 
 	return (<FocusContext.Provider value={ focusKey }>

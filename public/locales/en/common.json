@@ -30,7 +30,8 @@
     "PAGES": {
         "M3U": {
             "LOAD_MESSAGE": "We are checking if you already have a loaded M3U list...",
-            "LOAD_ERROR": "The M3U list could not be loaded."
+            "LOAD_ERROR": "The M3U list could not be loaded.",
+            "INVALID_URL": "The URL is not valid."
         },
         "LIBRARY": {
             "INFO": "Elements: {{items}} - Groups: {{groups}} - URL: {{url}}",
