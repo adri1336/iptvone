@@ -20,7 +20,11 @@
         "CONTINUE": "Continuar",
         "URL": "URL",
         "INFO": "Información",
-        "TITLE": "Título"
+        "TITLE": "Título",
+        "SEASON": "Temporada",
+        "EPISODE": "Episodio",
+        "TIME": "Tiempo",
+        "PLAY": "Reproducir"
     },
     "PAGES": {
         "M3U": {
@@ -34,7 +38,11 @@
             "CHANGE_URL": "Cambiar URL",
             "DELETE_HISTORY": "Borrar historial",
             "CLEAR_SEARCH": "Limpiar búsqueda",
-            "NO_ITEMS_FOUND": "No se han encontrado elementos."
+            "NO_ITEMS_FOUND": "No se han encontrado elementos.",
+            "GO_BACK": "Volver atrás",
+            "CURRENT_PROGRESS": "Progreso actual",
+            "NO_PROGRESS": "Sin comenzar",
+            "TOTAL_EPISODES": "{{episodes}} episodios"
         }
     }
 }

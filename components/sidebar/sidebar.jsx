@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 import { useTranslation } from 'next-i18next';
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
 
-const Sidebar = ({ onGroupSelected }) => {
+const Sidebar = ({ onGroupSelected, selectedIndex = -1 }) => {
     const [ lastFocused, setLastFocused ] = useState('group_start');
-    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(-1);
+    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(selectedIndex);
     const { t } = useTranslation('common');
     const { ref, focusKey, focusSelf, setFocus, getCurrentFocusKey } = useFocusable({
         onFocus: () => {
@@ -21,6 +21,11 @@ const Sidebar = ({ onGroupSelected }) => {
     useEffect(() => {
         setFocus('group_start');
     }, [focusSelf]);
+
+    useEffect(() => {
+        if(selectedIndex === -1) setFocus('group_start');
+        else setFocus('group_' + selectedIndex);
+    }, [selectedIndex]);
 
 
     return (<FocusContext.Provider value={ focusKey }>

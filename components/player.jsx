@@ -196,6 +196,7 @@ const Player = (props) => {
     return <></>;
 
     const handleControlAction = (action) => {
+        let newSeconds = 0;
         switch(action) {
             case 'play':
                 setPlaying(true);
@@ -213,22 +214,34 @@ const Player = (props) => {
                 }
                 break;
             case 'seek:-20m':
-                playerRef.current.seekTo(playerRef.current.getCurrentTime() - 1200);
+                newSeconds = playerRef.current.getCurrentTime() - 1200;
+                if(newSeconds < 0) newSeconds = 0;
+                playerRef.current.seekTo(newSeconds);
                 break;
             case 'seek:-5m':
-                playerRef.current.seekTo(playerRef.current.getCurrentTime() - 300);
+                newSeconds = playerRef.current.getCurrentTime() - 300;
+                if(newSeconds < 0) newSeconds = 0;
+                playerRef.current.seekTo(newSeconds);
                 break;
             case 'seek:-30s':
-                playerRef.current.seekTo(playerRef.current.getCurrentTime() - 30);
+                newSeconds = playerRef.current.getCurrentTime() - 30;
+                if(newSeconds < 0) newSeconds = 0;
+                playerRef.current.seekTo(newSeconds);
                 break;
             case 'seek:+30s':
-                playerRef.current.seekTo(playerRef.current.getCurrentTime() + 30);
+                newSeconds = playerRef.current.getCurrentTime() + 30;
+                if(newSeconds > duration) newSeconds = duration - 1;
+                playerRef.current.seekTo(newSeconds);
                 break;
             case 'seek:+5m':
-                playerRef.current.seekTo(playerRef.current.getCurrentTime() + 300);
+                newSeconds = playerRef.current.getCurrentTime() + 300;
+                if(newSeconds > duration) newSeconds = duration - 1;
+                playerRef.current.seekTo(newSeconds);
                 break;
             case 'seek:+20m':
-                playerRef.current.seekTo(playerRef.current.getCurrentTime() + 1200);
+                newSeconds = playerRef.current.getCurrentTime() + 1200;
+                if(newSeconds > duration) newSeconds = duration - 1;
+                playerRef.current.seekTo(newSeconds);
                 break;
         }
     };
@@ -264,9 +277,10 @@ const Player = (props) => {
                 } }
                 onSeek={ () => !playing && setPlaying(true) }
                 onEnded={ () => {
-                    if(props.onClose) {
+                    setPlaying(false);
+                    if(props.onEnded) {
                         loader(false);
-                        props.onClose();
+                        props.onEnded();
                     }
                 }}
                 onDuration={ (duration) => {

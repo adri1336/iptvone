@@ -19,11 +19,10 @@ const Item = ({ item, onSelected, focusKey, onFocus }) => {
         },
         focusKey: focusKey,
     });
-
     
     const loadItemImage = () => {
-        const raw = item.raw;
-        const image = IPTV.getRawValue(raw, "tvg-logo");
+        //const raw = item.raw;
+        const image = item?.tvg?.logo; //IPTV.getRawValue(raw, "tvg-logo");
         if(image) {
             const img = new Image();
             img.src = image;
