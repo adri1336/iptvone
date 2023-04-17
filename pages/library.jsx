@@ -13,8 +13,10 @@ import Button from "@/components/button";
 import FlatList from "flatlist-react";
 import { toast } from 'react-toastify';
 import LanguageSwitcher from "@/components/languageswitcher";
+import { useRouter } from 'next/router';
 
 export default () => {
+    const router = useRouter();
     const { focusKey, focusSelf, setFocus, getCurrentFocusKey } = useFocusable({});
     const [ lastFocused, setLastFocused ] = useState(null);
     const [ lastFocusedCollection, setLastFocusedCollection ] = useState(null);
@@ -23,6 +25,13 @@ export default () => {
     const [ collection, setCollection ] = useState(null);
     const [ playedSeconds, setPlayedSeconds ] = useState(0);
     
+    useEffect(() => {
+        if(typeof window !== 'undefined') {
+			const lang = localStorage.getItem('LANGUAGE');
+			if(lang) router.push(router.asPath, router.asPath, { locale: lang });
+		}
+    }, []);
+
     useEffect(() => {
         if(typeof window !== 'undefined') {
             window.scrollTo({ top: -100, behavior: 'instant' });
