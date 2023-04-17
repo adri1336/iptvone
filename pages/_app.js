@@ -20,7 +20,6 @@ const App = ({ Component, pageProps }) => {
 		<Head>
 			<title>{ ENV.APP_NAME }</title>
 			<link rel="shortcut icon" href="/favicon.ico" />
-			<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 		</Head>
 		<Loader/>
 		<Component {...pageProps} />
