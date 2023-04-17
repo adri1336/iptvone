@@ -39,7 +39,7 @@ export default () => {
 			const url = localStorage.getItem('M3U_URL');
 			setInputUrlValue(url);
 			if(!change && url) {
-				loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE') + ' ' + url, opacity: 1.0, logo: true });				
+				loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });				
 				loadPlaylist(url);
 			}
 		}
