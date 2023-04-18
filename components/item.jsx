@@ -15,7 +15,7 @@ const Item = ({ item, onSelected, focusKey, onFocus }) => {
             onFocus();
             
             if(ref?.current)
-            ref.current.scrollIntoView({ behavior: "instant", block: "center" });
+            ref.current.scrollIntoView({ behavior: "instant", block: "center", inline: "center" });
         },
         focusKey: focusKey,
     });

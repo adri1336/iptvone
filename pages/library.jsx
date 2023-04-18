@@ -269,7 +269,7 @@ const CollectionPage = ({ collection, onBack, playItem, onPlay }) => {
                         return (
                             <div key={ season } className="d-flex flex-column">
                                 <span className="text-medium fw-bold mb-10">{ t('COMMON.SEASON') + ' ' + season }</span>
-                                <div className="d-flex flex-wrap justify-content-start">
+                                <div className="d-flex flex-row justify-content-start mb-10" style={{ overflow: 'auto' }}>
                                     <FlatList
                                         renderOnScroll
                                         renderWhenEmpty={ () => <></> }
@@ -419,7 +419,7 @@ const StartPage = ({ playItem, onPlay }) => {
                         setLastItems([]);
                         localStorage.removeItem('LAST_ITEMS');
                     } }>{ t('PAGES.LIBRARY.DELETE_HISTORY') }</Button>
-                    <div className="d-flex flex-wrap justify-content-start">
+                    <div className="d-flex flex-row justify-content-start mb-10" style={{ overflow: 'auto' }}>
                         <FlatList
                             renderOnScroll
                             renderWhenEmpty={ () => <></> }
@@ -463,7 +463,7 @@ const StartPage = ({ playItem, onPlay }) => {
                             </div> :
                             <>
                                 <Button focusKey={ 'clear_search' } onFocus={ () => setLastFocused('clear_search') } type="button" className="dark-button" onClick={ () => setFoundItems([]) }>{ t('PAGES.LIBRARY.CLEAR_SEARCH') }</Button>
-                                <div className="d-flex flex-wrap justify-content-start mt-10">
+                                <div className="d-flex flex-row justify-content-start mt-10 mb-10" style={{ overflow: 'auto' }}>
                                     <FlatList
                                         renderOnScroll
                                         renderWhenEmpty={ () => <></> }
@@ -536,7 +536,7 @@ const GroupPage = ({ selectedGroupIndex, onPlay }) => {
         <div ref={ ref } className="mpage">
             <div className="d-flex flex-column">
                 <span className="title-small fw-bold mb-40">{ (IPTV.getGroups())[selectedGroupIndex] }</span>
-                <div className="d-flex flex-wrap justify-content-center">
+                <div className="itemsContainer">
                     <FlatList
                         renderOnScroll
                         renderWhenEmpty={ () => <></> }
