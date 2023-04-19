@@ -9,7 +9,8 @@
             "PLAY": "Reproducir",
             "REPLAY": "Reiniciar",
             "PAUSE": "Pausar",
-            "EXIT": "Salir"
+            "EXIT": "Salir",
+            "USING_CONVERSOR": "Transcodificando en tiempo real (puede ser inestable)"
         },
         "SIDEBAR": {
             "START": "Inicio"

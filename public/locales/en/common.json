@@ -9,7 +9,8 @@
             "PLAY": "Play",
             "REPLAY": "Restart",
             "PAUSE": "Pause",
-            "EXIT": "Exit"
+            "EXIT": "Exit",
+            "USING_CONVERSOR": "Transcoding in real time (could be unstable)"
         },
         "SIDEBAR": {
             "START": "Start"

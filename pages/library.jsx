@@ -112,7 +112,7 @@ export default () => {
         const items = localStorage.getItem('LAST_ITEMS');
         if(items) {
             const tmpLastItems = JSON.parse(items);
-            const index = tmpLastItems.findIndex(i => i.name === item.name || i?.tvName === item?.tvName);
+            const index = tmpLastItems.findIndex(i => i.name === item.name || (i?.tvName && item?.tvName && i.tvName === item.tvName));
             if(index > -1) {
                 tmpLastItems[index].playedSeconds = progress.playedSeconds;
                 if(tmpLastItems[index].isCollection) {
