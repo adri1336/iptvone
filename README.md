@@ -19,3 +19,9 @@ Try it: http://app.iptvx-app.com/
 ![](https://i.imgur.com/ICkWbKBl.png)
 ![](https://i.imgur.com/B5HyDsQl.png)
 ![](https://i.imgur.com/3vqezfEl.png)
+
+## Donators
+- Empty list 😔
+
+## Donate to help maintain the project and develop new features
+[![Donate with PayPal](https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Z5DFHA5C2RAFJ)
