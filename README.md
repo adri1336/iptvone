@@ -2,6 +2,11 @@
 A simple but powerful IPTV web based player developed using Next.js\
 Try it: http://app.iptvx-app.com/
 
+## Platforms
+- Web (this repository)
+- Android: https://github.com/adri1336/rn-iptvx
+- LG WebOs: https://github.com/adri1336/lgwebos-iptvx
+
 ## Features
 - Save last played items
 - Save progress in movies and TV series
