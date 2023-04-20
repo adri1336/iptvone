@@ -270,9 +270,23 @@ const Player = (props) => {
                     if(playing) handleControlAction('pause');
                     else handleControlAction('play');
                 }
+                else if(keyCode === 415 /* LG Play Button */) handleControlAction('play');
+                else if(keyCode === 19 /* LG Pause Button */) handleControlAction('pause');
+            };
+            const handleMessage = (e) => { // for Android
+                if(e && e?.data === 'goBack') {
+                    if(props.onClose) {
+                        loader(false);
+                        props.onClose();
+                    }
+                }
             };
             window.addEventListener("keydown", handleKeyDown);
-            return () => window.removeEventListener("keydown", handleKeyDown);
+            window.addEventListener("message", handleMessage);
+            return () => {
+                window.removeEventListener("keydown", handleKeyDown);
+                window.removeEventListener("message", handleMessage);
+            }
         }
     }, [playing]);
 

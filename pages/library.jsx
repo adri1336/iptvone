@@ -15,9 +15,11 @@ import { toast } from 'react-toastify';
 import LanguageSwitcher from "@/components/languageswitcher";
 import { useRouter } from 'next/router';
 import ItemList from "@/components/itemlist";
+import { Oval } from "react-loader-spinner";
 
 export default () => {
     const router = useRouter();
+    const [ IPTVLoaded, setIPTVLoaded ] = useState(false);
     const { focusKey, focusSelf, setFocus, getCurrentFocusKey } = useFocusable({});
     const [ lastFocused, setLastFocused ] = useState(null);
     const [ lastFocusedCollection, setLastFocusedCollection ] = useState(null);
@@ -40,8 +42,16 @@ export default () => {
                 if(keyCode === 461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */ || keyCode === 27 /* Esc */)
                 setSelectedGroupIndex(-1);
             };
+            const handleMessage = (e) => { // for Android TV
+                if(e && e?.data === 'goBack')
+                setSelectedGroupIndex(-1);
+            };
             window.addEventListener("keydown", handleKeyDown);
-            return () => window.removeEventListener("keydown", handleKeyDown);
+            window.addEventListener("message", handleMessage);
+            return () => {
+                window.removeEventListener("keydown", handleKeyDown);
+                window.removeEventListener("message", handleMessage);
+            }
         }
     }, [collection, playItem, selectedGroupIndex]);
 
@@ -52,8 +62,8 @@ export default () => {
     }, [selectedGroupIndex]);
 
     useEffect(() => {
-        if(IPTV.getURL().length <= 0)
-        Router.replace('/');
+        if(IPTV.getURL().length <= 0) Router.replace('/');
+        else setIPTVLoaded(true);
     }, [IPTV.getURL()])
 
     useEffect(() => {
@@ -129,6 +139,13 @@ export default () => {
         }
     };
     
+    if(!IPTVLoaded)
+    return (
+        <div className="d-flex align-items-center justify-content-center" style={{ backgroundColor: '#353535', width: '100vw', height: '100vh' }}>
+            <Oval width={ 90 } height={ 90 } color='#c4c4c4' secondaryColor='#454545'/>
+        </div>
+    );
+
     return (<FocusContext.Provider value={ focusKey }>
         {
             playItem &&
@@ -212,8 +229,16 @@ const CollectionPage = ({ collection, onBack, playItem, onPlay }) => {
                 if(keyCode === 461 /* LG Back Button */ || keyCode === 10009 /* Samsung Back Button */ || keyCode === 27 /* Esc */)
                 onBack();
             };
+            const handleMessage = (e) => { //for Android
+                if(e && e?.data === 'goBack')
+                onBack();
+            };
             window.addEventListener("keydown", handleKeyDown);
-            return () => window.removeEventListener("keydown", handleKeyDown);
+            window.addEventListener("message", handleMessage);
+            return () => {
+                window.removeEventListener("keydown", handleKeyDown);
+                window.removeEventListener("message", handleMessage);
+            }
         }
     }, [playItem]);
 
