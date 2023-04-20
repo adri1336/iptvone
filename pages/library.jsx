@@ -14,6 +14,7 @@ import FlatList from "flatlist-react";
 import { toast } from 'react-toastify';
 import LanguageSwitcher from "@/components/languageswitcher";
 import { useRouter } from 'next/router';
+import ItemList from "@/components/itemlist";
 
 export default () => {
     const router = useRouter();
@@ -537,8 +538,13 @@ const GroupPage = ({ selectedGroupIndex, onPlay }) => {
             <div className="d-flex flex-column">
                 <span className="title-small fw-bold mb-40">{ (IPTV.getGroups())[selectedGroupIndex] }</span>
                 <div className="itemsContainer">
-                    <FlatList
-                        renderOnScroll
+                    <ItemList
+                        items={ items }
+                        onSelected={ item => onPlay(item) }
+                        onFocus={ index => setLastFocused(`item_${ index }`) }
+                    />
+                    {/*<FlatList
+                        
                         renderWhenEmpty={ () => <></> }
                         list={ items }
                         renderItem={
@@ -555,7 +561,7 @@ const GroupPage = ({ selectedGroupIndex, onPlay }) => {
                                 />
                             }
                         }
-                    />
+                    />*/}
                 </div>
             </div>
         </div>

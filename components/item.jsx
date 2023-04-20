@@ -1,10 +1,9 @@
 import styles from "@/styles/item.module.css";
-import IPTV from "@/utils/iptv";
 import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
-const Item = ({ item, onSelected, focusKey, onFocus }) => {
+const Item = ({ item, render = true, onSelected, focusKey, onFocus }) => {
     const { ref: viewRef, inView, entry } = useInView({});
 
     const [ renderImage, setRenderImage ] = useState(null);
@@ -40,7 +39,12 @@ const Item = ({ item, onSelected, focusKey, onFocus }) => {
         loadItemImage();
     }, [item]);
     
-    if(!renderImage) {
+    if(!render) {
+        return (<div ref={ viewRef }>
+            <div ref={ ref } className={ styles.itemContainer }/>
+        </div>);
+    }
+    else if(!renderImage) {
         return (<div ref={ viewRef }>
             <div ref={ ref } className={ styles.itemContainer + " d-flex flex-column justify-content-center align-items-center" + (focused ? " " + styles.itemfocused : "") } onClick={ () => onSelected() }>
                 <span className="text-medium text-center">{ item.name }</span>
