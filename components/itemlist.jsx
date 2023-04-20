@@ -5,7 +5,6 @@ import Item from "./item";
 const ITEM_WIDTH    = 350;  // px
 const ITEM_HEIGHT   = 300;  // px
 const ITEM_MARGIN   = 10;   // px
-const SIDEBAR_WIDTH = 400;  // px
 
 const ItemList = ({ items, onSelected, onFocus }) => {
     const [ grid, setGrid ] = useState(null);
@@ -17,10 +16,12 @@ const ItemList = ({ items, onSelected, onFocus }) => {
             let dimensions = getWindowDimensions(window);
             if(dimensions) {
                 const top = topRef.current.getBoundingClientRect().top;
-                dimensions.width -= SIDEBAR_WIDTH;
+                const initialWidth = topRef.current.getBoundingClientRect().x + ITEM_MARGIN;
+                dimensions.width -= initialWidth;
                 dimensions.height -= top;
+
                 let columns = Math.floor(dimensions.width / (ITEM_WIDTH + ITEM_MARGIN));
-                let rows = Math.ceil(items.length / columns);
+                let rows = Math.floor(items.length / columns);
                 
                 if(columns < 1) columns = 1;
                 if(rows < 1) rows = 1;
