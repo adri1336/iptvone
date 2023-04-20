@@ -46,7 +46,7 @@ export default () => {
     }, [collection, playItem, selectedGroupIndex]);
 
     useEffect(() => {
-        if(typeof window !== 'undefined') {
+        if(selectedGroupIndex === -1 && typeof window !== 'undefined') {
             window.scrollTo({ top: -100, behavior: 'instant' });
         }
     }, [selectedGroupIndex]);

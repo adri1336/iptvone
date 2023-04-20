@@ -6,13 +6,19 @@ const ITEM_WIDTH    = 350;  // px
 const ITEM_HEIGHT   = 300;  // px
 const ITEM_MARGIN   = 10;   // px
 
-const ItemList = ({ items, onSelected, onFocus }) => {
+const ItemList = ({ items, onSelected, onFocus, selectedGroupIndex }) => {
     const [ grid, setGrid ] = useState(null);
-    const [ scrollPosition, setScrollPosition ] = useState(0);
     const topRef = useRef(null);
 
     useEffect(() => {
-        if(topRef && topRef?.current && typeof window !== "undefined" && items && items.length > 0 && !grid) {
+        if(grid) {
+            setGrid(null);
+        }
+    }, [items.length]);
+
+    useEffect(() => {
+        if(topRef && topRef?.current && typeof window !== "undefined" && items && items.length > 0 && grid === null) {
+            window.scrollTo({ top: -100, behavior: 'instant' });
             let dimensions = getWindowDimensions(window);
             if(dimensions) {
                 const top = topRef.current.getBoundingClientRect().top;
@@ -22,6 +28,7 @@ const ItemList = ({ items, onSelected, onFocus }) => {
 
                 let columns = Math.floor(dimensions.width / (ITEM_WIDTH + ITEM_MARGIN));
                 let rows = Math.floor(items.length / columns);
+                let visibleRows = Math.ceil(dimensions.height / (ITEM_HEIGHT + (ITEM_MARGIN * 3)));
                 
                 if(columns < 1) columns = 1;
                 if(rows < 1) rows = 1;
@@ -31,36 +38,58 @@ const ItemList = ({ items, onSelected, onFocus }) => {
                     rows: rows,
                     top: top,
                     width: dimensions.width,
-                    height: dimensions.height
+                    height: dimensions.height,
+                    items: items,
+                    lastRenderedRow: visibleRows,
+                    visibleRows: visibleRows,
+                    offsetRows: 2
                 });
-
-                //scroll
-                const handleScroll = () => setScrollPosition(window.scrollY);
-                window.addEventListener("scroll", handleScroll);
-                return () => window.removeEventListener("scroll", handleScroll);
             }
         }
-    }, [topRef]);
+        else if(grid !== null) {  
+            if(grid.lastRenderedRow === grid.visibleRows)
+            renderMoreItems();
 
-    if(!grid) return <div ref={ topRef }/>;
+            window.addEventListener("scroll", handleScroll);
+            return () => window.removeEventListener("scroll", handleScroll);
+        }
+    }, [topRef, grid]);
+
+    const handleScroll = () => {
+        const scrollY = window.scrollY;
+        const lastVisibleRow = Math.floor((scrollY + grid.height) / (ITEM_HEIGHT + (ITEM_MARGIN * 3)));
+        
+        if(grid.lastRenderedRow - lastVisibleRow < 2)
+        renderMoreItems();
+    };
+
+    const renderMoreItems = () => {
+        const renderUpToRow = grid.lastRenderedRow + grid.offsetRows;
+        let newItems = [], lastRenderedRow = null;
+        grid.items.forEach((item, index) => {
+            const row = Math.floor(index / grid.columns);
+            const render = row <= renderUpToRow;
+            if(render) lastRenderedRow = row;
+            
+            item.render = render;
+            newItems.push(item);
+        });
+        setGrid({ ...grid, items: newItems, lastRenderedRow: lastRenderedRow });
+    };
+
+    if(grid === null)
+    return <div ref={ topRef }/>;
+
     return <>
         {
-            items.map((item, index) => {
-                //render only visible items
-                let row = Math.floor(index / grid.columns);
-                let top = grid.top + ITEM_MARGIN + (row * (ITEM_HEIGHT + (ITEM_MARGIN * 3)));
-                const offset = 1000;
-                //render if item is in the viewport or if it's close to the viewport
-                const render = (top >= scrollPosition - offset && top <= scrollPosition + grid.height + offset);
-                console.log("Item: " + item.name + " - " + render)
-                if(!render) return <Item key={ index } focusKey={ `item_${ index }` } render={ false }/>;
-
+            grid.items.filter(i => i.render === true).map((item, index) => {
                 if(item?.isCollection)
                 item.name = item?.tvName;
-
+                
                 return <Item
-                    key={ index }
+                    key={ `${ index }` }
                     item={ item }
+                    render={ item.render === false || item.render === undefined ? false : true }
                     onSelected={ () => onSelected(item) }
                     focusKey={ `item_${ index }` }
                     onFocus={ () => onFocus(index) }
