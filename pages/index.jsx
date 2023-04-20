@@ -14,12 +14,14 @@ import IPTV from "@/utils/iptv";
 import Router from "next/router";
 import { useRouter } from 'next/router';
 import LanguageSwitcher from "@/components/languageswitcher";
+import { Oval } from "react-loader-spinner";
 
 export default () => {
 	const router = useRouter();
 	const { t } = useTranslation('common');
 	const { focusKey, setFocus, focusSelf } = useFocusable({});
 
+	const [ pageLoaded, setPageLoaded ] = useState(false);
 	const [ keyboardFocused, setKeyboardFocused ] = useState(false);
 	const [ activeRef, setActiveRef ] = useState(null);
 	const [ inputUrlValue, setInputUrlValue ] = useState('');
@@ -27,6 +29,8 @@ export default () => {
 
 	useEffect(() => {
 		if(typeof window !== 'undefined') {
+			loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });
+
 			const lang = localStorage.getItem('LANGUAGE');
 			if(lang) router.push(router.asPath, router.asPath, { locale: lang });
 		}
@@ -38,9 +42,10 @@ export default () => {
 
 			const url = localStorage.getItem('M3U_URL');
 			setInputUrlValue(url);
-			if(!change && url) {
-				loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });				
-				loadPlaylist(url);
+			if(!change && url) loadPlaylist(url);
+			else {
+				loader(false);
+				setPageLoaded(true);
 			}
 		}
     }, [router.isReady]);
@@ -72,17 +77,19 @@ export default () => {
 				}
 				catch(e) {
 					loader(false);
+					setPageLoaded(true);
 					toast.error(t('PAGES.M3U.LOAD_ERROR'));
 				}
 			}
 			else {
 				loader(false);
+				setPageLoaded(true);
 				toast.error(t('PAGES.M3U.LOAD_ERROR'));
 			}
 		}
 		catch(e) {
-			console.log("Error: ", e)
 			loader(false);
+			setPageLoaded(true);
 			toast.error(t('PAGES.M3U.LOAD_ERROR'));
 		}
 	};
@@ -99,6 +106,7 @@ export default () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		loader(true);
+		setPageLoaded(false);
 		const url = inputUrlRef.current.value;
 		if(url) {
 			localStorage.setItem('M3U_URL', url);
@@ -106,9 +114,17 @@ export default () => {
 		}
 		else {
 			loader(false);
+			setPageLoaded(true);
 			toast.error(t('PAGES.M3U.INVALID_URL'));
 		}
 	};
+
+	if(!pageLoaded)
+    return (
+        <div className="d-flex align-items-center justify-content-center" style={{ backgroundColor: '#353535', width: '100vw', height: '100vh' }}>
+            <Oval width={ 90 } height={ 90 } color='#c4c4c4' secondaryColor='#454545'/>
+        </div>
+    );
 
 	return (<FocusContext.Provider value={ focusKey }>
 		<div className="page d-flex flex-column justify-content-center align-items-center">
