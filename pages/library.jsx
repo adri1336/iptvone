@@ -76,7 +76,7 @@ export default () => {
             let tmpLastItems = [], exists = false;
             if(items) {
                 tmpLastItems = JSON.parse(items);
-                exists = tmpLastItems.some(item => item.name === playItem.name || (playItem?.isCollection && item?.tvName === playItem?.tvName));
+                exists = tmpLastItems.some(i => i.name === playItem.name || (i?.tvName && playItem?.tvName && i.tvName === playItem.tvName));
             }
 
             if(!exists) {
@@ -85,7 +85,7 @@ export default () => {
                 localStorage.setItem('LAST_ITEMS', JSON.stringify(tmpLastItems));
             }
             else {
-                const index = tmpLastItems.findIndex(item => item.name === playItem.name || item?.tvName === playItem?.tvName);
+                const index = tmpLastItems.findIndex(i => i.name === playItem.name || (i?.tvName && playItem?.tvName && i.tvName === playItem.tvName));
                 const item = tmpLastItems[index];
                 if(item?.isCollection) {
                     if(item.season != playItem.season || item.episode != playItem.episode)
@@ -225,11 +225,11 @@ const CollectionPage = ({ collection, onBack, playItem, onPlay }) => {
         let tmpLastItems = [], exists = false;
         if(items) {
             tmpLastItems = JSON.parse(items);
-            exists = tmpLastItems.some(item => item?.tvName === collection.tvName);
+            exists = tmpLastItems.some(i => i?.tvName && collection?.tvName && i.tvName === collection.tvName);
         }
 
         if(exists) {
-            const index = tmpLastItems.findIndex(item => item?.tvName === collection.tvName);
+            const index = tmpLastItems.findIndex(i => i?.tvName && collection?.tvName && i.tvName === collection.tvName);
             const item = tmpLastItems[index];
             setCurrentItem(item);
         }
