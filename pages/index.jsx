@@ -25,7 +25,7 @@ export default () => {
 	const [ keyboardFocused, setKeyboardFocused ] = useState(false);
 	const [ activeRef, setActiveRef ] = useState(null);
 	const [ inputUrlValue, setInputUrlValue ] = useState('');
-	const inputUrlRef = useRef();
+	const inputUrlRef = useRef(null);
 
 	useEffect(() => {
 		if(typeof window !== 'undefined') {
@@ -99,9 +99,9 @@ export default () => {
     }, [focusSelf]);
 
 	useEffect(() => {
-		if(inputUrlRef.current)
+		if(pageLoaded && inputUrlRef?.current)
 		setActiveRef(inputUrlRef);
-	}, [inputUrlRef]);
+	}, [inputUrlRef, pageLoaded]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
