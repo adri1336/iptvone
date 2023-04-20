@@ -49,7 +49,10 @@ const ItemList = ({ items, onSelected, onFocus }) => {
                 //render only visible items
                 let row = Math.floor(index / grid.columns);
                 let top = grid.top + ITEM_MARGIN + (row * (ITEM_HEIGHT + (ITEM_MARGIN * 3)));
-                const render = scrollPosition + grid.height > top && scrollPosition < top + ITEM_HEIGHT;
+                const offset = 1000;
+                //render if item is in the viewport or if it's close to the viewport
+                const render = (top >= scrollPosition - offset && top <= scrollPosition + grid.height + offset);
+                console.log("Item: " + item.name + " - " + render)
                 if(!render) return <Item key={ index } focusKey={ `item_${ index }` } render={ false }/>;
 
                 if(item?.isCollection)
