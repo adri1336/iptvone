@@ -21,7 +21,6 @@ const Item = ({ item, onSelected, focusKey, onFocus }) => {
     
     const loadItemImage = () => {
         //const raw = item.raw;
-        console.log(item)
         const image = item?.tvg?.logo; //IPTV.getRawValue(raw, "tvg-logo");
         if(image) {
             const img = new Image();

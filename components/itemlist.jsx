@@ -51,7 +51,17 @@ const ItemList = ({ items, onSelected, onFocus, selectedGroupIndex }) => {
             renderMoreItems();
 
             window.addEventListener("scroll", handleScroll);
-            return () => window.removeEventListener("scroll", handleScroll);
+
+            let timer = null;
+            if(grid?.renderTimer) {
+                timer = setTimeout(() => {
+                    renderMoreItems();
+                }, 300);
+            }
+            return () => {
+                window.removeEventListener("scroll", handleScroll),
+                clearTimeout(timer);
+            };
         }
     }, [topRef, grid]);
 
@@ -60,10 +70,10 @@ const ItemList = ({ items, onSelected, onFocus, selectedGroupIndex }) => {
         const lastVisibleRow = Math.floor((scrollY + grid.height) / (ITEM_HEIGHT + (ITEM_MARGIN * 3)));
         
         if(grid.lastRenderedRow - lastVisibleRow < 2)
-        renderMoreItems();
+        renderMoreItems(true);
     };
 
-    const renderMoreItems = () => {
+    const renderMoreItems = (renderTimer = false) => {
         const renderUpToRow = grid.lastRenderedRow + grid.offsetRows;
         let newItems = [], lastRenderedRow = null;
         grid.items.forEach((item, index) => {
@@ -74,7 +84,7 @@ const ItemList = ({ items, onSelected, onFocus, selectedGroupIndex }) => {
             item.render = render;
             newItems.push(item);
         });
-        setGrid({ ...grid, items: newItems, lastRenderedRow: lastRenderedRow });
+        setGrid({ ...grid, items: newItems, lastRenderedRow: lastRenderedRow, renderTimer: renderTimer });
     };
 
     if(grid === null)
