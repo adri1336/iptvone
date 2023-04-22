@@ -82,6 +82,7 @@ const ItemList = ({ items, onSelected, onFocus, selectedGroupIndex }) => {
             if(render) lastRenderedRow = row;
             
             item.render = render;
+            item.renderImage = !renderTimer;
             newItems.push(item);
         });
         setGrid({ ...grid, items: newItems, lastRenderedRow: lastRenderedRow, renderTimer: renderTimer });
@@ -95,11 +96,12 @@ const ItemList = ({ items, onSelected, onFocus, selectedGroupIndex }) => {
             grid.items.filter(i => i.render === true).map((item, index) => {
                 if(item?.isCollection)
                 item.name = item?.tvName;
-                
+
                 return <Item
                     key={ `${ index }` }
                     item={ item }
                     render={ item.render === false || item.render === undefined ? false : true }
+                    renderTheImage={ item.renderImage === false || item.renderImage === undefined ? false : true }
                     onSelected={ () => onSelected(item) }
                     focusKey={ `item_${ index }` }
                     onFocus={ () => onFocus(index) }

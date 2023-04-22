@@ -3,7 +3,7 @@ import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
-const Item = ({ item, onSelected, focusKey, onFocus }) => {
+const Item = ({ item, onSelected, focusKey, onFocus, renderTheImage = true }) => {
     const { ref: viewRef, inView, entry } = useInView({});
 
     const [ renderImage, setRenderImage ] = useState(null);
@@ -30,14 +30,16 @@ const Item = ({ item, onSelected, focusKey, onFocus }) => {
     };
 
     useEffect(() => {
-        if(inView && !renderImage) loadItemImage();
-        else if(!inView && renderImage) setRenderImage(null);
-    }, [inView]);
+        if(renderTheImage) {
+            if(inView && !renderImage) loadItemImage();
+            else if(!inView && renderImage) setRenderImage(null);
+        }
+    }, [inView, renderTheImage]);
 
     useEffect(() => {
-        if(inView && renderImage)
+        if(renderTheImage && inView && renderImage)
         loadItemImage();
-    }, [item]);
+    }, [item, renderTheImage]);
     
     if(!renderImage) {
         return (<div ref={ viewRef }>
