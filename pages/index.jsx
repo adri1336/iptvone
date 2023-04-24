@@ -14,7 +14,6 @@ import IPTV from "@/utils/iptv";
 import Router from "next/router";
 import { useRouter } from 'next/router';
 import LanguageSwitcher from "@/components/languageswitcher";
-import { Oval } from "react-loader-spinner";
 
 export default () => {
 	const router = useRouter();
@@ -50,47 +49,51 @@ export default () => {
 		}
     }, [router.isReady]);
 
-	const loadPlaylist = async url => {
-		try {
-			const res = await fetch(url, { method: 'GET' });
-			if(res.ok) {
-				try {
-					//convertir la lista de canales a json
-					const m3u = await res.text();
-					const list = parser.parse(m3u);
-					
-					//extraer todos los grupos de la lista de canales
-					let groups = [];
-					list.items.forEach(item => {
-						if(item?.group?.title && !groups.includes(item.group.title))
-						groups.push(item.group.title);
-					});
+	const loadPlaylist = async toLoadUrls => {
+		//separar todas las distintas urls por comas o puntos y comas
+		const urls = toLoadUrls.split(/[,;]/g);
+		let urlsLoaded = 0;
+		let groups = [];
+		let items = [];
+		for(let i = 0; i < urls.length; i++) {
+			const url = urls[i].trim();
+			try {
+				const res = await fetch(url, { method: 'GET' });
+				if(res.ok) {
+					try {
+						//convertir la lista de canales a json
+						const m3u = await res.text();
+						const list = parser.parse(m3u);
+						
+						//extraer todos los grupos de la lista de canales
+						list.items.forEach(item => {
+							if(item?.group?.title && !groups.includes(item.group.title))
+							groups.push(item.group.title);
+						});
 
-					//establecer los grupos y los canales
-					IPTV.setURL(url);
-					IPTV.setGroups(groups);
-					IPTV.setItems(list.items);
-
-					//redireccionar a la página de canales
-					loader(false);
-					Router.replace( "/library");
-				}
-				catch(e) {
-					loader(false);
-					setPageLoaded(true);
-					toast.error(t('PAGES.M3U.LOAD_ERROR'));
+						items = items.concat(list.items);
+						urlsLoaded ++;
+					}
+					catch(e) { }
 				}
 			}
-			else {
-				loader(false);
-				setPageLoaded(true);
-				toast.error(t('PAGES.M3U.LOAD_ERROR'));
-			}
+			catch(e) { }
 		}
-		catch(e) {
+
+		if(urlsLoaded === 0) {
 			loader(false);
 			setPageLoaded(true);
 			toast.error(t('PAGES.M3U.LOAD_ERROR'));
+		}
+		else {
+			//establecer los grupos y los canales
+			IPTV.setURL(toLoadUrls);
+			IPTV.setGroups(groups);
+			IPTV.setItems(items);
+
+			//redireccionar a la página de canales
+			loader(false);
+			Router.replace( "/library");
 		}
 	};
 
@@ -120,28 +123,24 @@ export default () => {
 	};
 
 	if(!pageLoaded)
-    return (
-        <div className="d-flex align-items-center justify-content-center" style={{ backgroundColor: '#353535', width: '100vw', height: '100vh' }}>
-            <Oval width={ 90 } height={ 90 } color='#c4c4c4' secondaryColor='#454545'/>
-        </div>
-    );
+    return <div className="d-flex align-items-center justify-content-center" style={{ backgroundColor: '#353535', width: '100vw', height: '100vh' }}/>;
 
 	return (<FocusContext.Provider value={ focusKey }>
 		<div className="page d-flex flex-column justify-content-center align-items-center">
 			<div className='languageSwitcherContainer'>
 				<LanguageSwitcher/>
 			</div>
-			<span className="title-small fw-bold">{ ENV.APP_NAME }</span>
+			<span className="title-small fw-bold mt-40">{ ENV.APP_NAME }</span>
 			<span className="text-small fw-bold">{ ENV.APP_WEB }</span>
 			<span className="text-small mb-30" style={{ fontSize: '10pt' }}>({ ENV.APP_VERSION })</span>
-			<div className="d-flex flex-row">
-				<div className="m-30"><Keyboard forRef={ activeRef } onFocus={ () => setKeyboardFocused(true) } onBlur={ () => setKeyboardFocused(false) }/></div>
-				<form className="m-30" style={{ width: 800 }} onSubmit={ handleSubmit }>
-					<div className="form-group">
+			<div className="d-flex flex-column align-items-center mb-10 bodyFormUrl">
+				<form className="m-10" style={{ width: '100%' }} onSubmit={ handleSubmit }>
+					<div className="d-flex flex-column m-10">
 						<Input iref={ inputUrlRef } type="url" value={ inputUrlValue } onChange={ e => setInputUrlValue(e.target.value) } className={ "dark-input" + " " + ((activeRef === inputUrlRef && keyboardFocused) ? "dark-input-focused" : "") } id="m3u" placeholder={ t('COMMON.M3U_URL') }/>
+						<Button type="submit" className="dark-button">{ t('COMMON.CONTINUE') }</Button>
 					</div>
-					<Button type="submit" className="dark-button">{ t('COMMON.CONTINUE') }</Button>
 				</form>
+				<Keyboard forRef={ activeRef } onFocus={ () => setKeyboardFocused(true) } onBlur={ () => setKeyboardFocused(false) }/>
 			</div>
 		</div>
 	</FocusContext.Provider>);

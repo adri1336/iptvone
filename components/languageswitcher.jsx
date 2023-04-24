@@ -24,7 +24,8 @@ const LanguageSwitcher = () => {
 
     if(languages.length <= 1) return (<></>);
     return (<div ref={ ref } className={ styles.container + " d-flex align-items-center justify-content-center" + " " + (focused ? styles.containerFocused : "") } onClick={ () => switchLanguage() }>
-        <span className="text-small fw-bold">{ t('COMMON.LANGUAGE') + ': ' + currentLanguage }</span>
+        <span className={ styles.languageText + " text-small fw-bold" }>{ t('COMMON.LANGUAGE') + ':'}</span>
+        <span className="text-small fw-bold">{ currentLanguage }</span>
     </div>);
 };
 

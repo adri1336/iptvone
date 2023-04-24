@@ -10,7 +10,10 @@
             "REPLAY": "Restart",
             "PAUSE": "Pause",
             "EXIT": "Exit",
-            "USING_CONVERSOR": "Transcoding in real time (could be unstable)"
+            "MUTE": "Mute",
+            "UNMUTE": "Unmute",
+            "FULLSCREEN": "Fullscreen",
+            "EXIT_FULLSCREEN": "Normal"
         },
         "SIDEBAR": {
             "START": "Start"

@@ -9,3 +9,10 @@
     overflow: auto;
     overflow-x: hidden;
 }
+
+/* For tablets */
+@media screen and (max-width: 1200px) {
+    .sidebarContainer {
+        width: 350px;
+    }
+}

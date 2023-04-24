@@ -2,11 +2,13 @@ import { createRef, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import styles from "@/styles/player.module.css";
 import { FaPlay, FaPause, FaRedoAlt, FaSignInAlt } from "react-icons/fa";
+import { GoMute, GoUnmute } from "react-icons/go";
+import { MdFullscreenExit, MdFullscreen } from "react-icons/md";
 import { useTranslation } from 'next-i18next';
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
 import { loader } from "@/components/loader/loader";
 import { toast } from 'react-toastify';
-import { Oval } from "react-loader-spinner";
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 const Control = ({ icon, text, onClick, setControls, focusKey }) => {
     const { ref, focused } = useFocusable({
@@ -74,7 +76,6 @@ const PlayerControls = ({ playerProps, onAction, isStream, conversor, duration, 
                 <span className="text-medium fw-bold text-center">{ playerProps.channelName }</span>
                 <span className="fw-bold text-center" style={{ fontSize: '10pt' }}>{ playerProps.url }</span>
                 { !isStream && durationString.length > 0 && progressString.length > 0 && <span className="text-small fw-bold text-center">{ `${ progressString }/${ durationString }` }</span> }
-                { conversor && <span className="text-small text-warning text-center text-uppercase fw-bold m-10">{ t('COMPONENTS.PLAYER.USING_CONVERSOR') }</span> }
                 <div className="d-flex flew-row justify-content-center">
                 {
                     !isStream &&
@@ -150,13 +151,51 @@ const PlayerControls = ({ playerProps, onAction, isStream, conversor, duration, 
                         />
                     }
                 </div>
-                <Control
-                    icon={ <FaSignInAlt/> }
-                    text={ t('COMPONENTS.PLAYER.EXIT') }
-                    onClick={ () => onAction('close') }
-                    setControls={ setControls }
-                    focusKey={ 'close' }
-                />
+                <div className="d-flex">
+                    {
+                        playerProps.muted ?
+                            <Control
+                                icon={ <GoMute/> }
+                                text={ t('COMPONENTS.PLAYER.UNMUTE') }
+                                onClick={ () => onAction('unmute') }
+                                setControls={ setControls }
+                                focusKey={ 'mute-unmute' }
+                            />
+                        :
+                            <Control
+                                icon={ <GoUnmute/> }
+                                text={ t('COMPONENTS.PLAYER.MUTE') }
+                                onClick={ () => onAction('mute') }
+                                setControls={ setControls }
+                                focusKey={ 'mute-unmute' }
+                            />
+                    }
+                    {
+                        playerProps.fullScreen ?
+                            <Control
+                                icon={ <MdFullscreenExit/> }
+                                text={ t('COMPONENTS.PLAYER.EXIT_FULLSCREEN') }
+                                onClick={ () => onAction('exit-fullscreen') }
+                                setControls={ setControls }
+                                focusKey={ 'fullscreen' }
+                            />
+                        :
+                            <Control
+                                icon={ <MdFullscreen/> }
+                                text={ t('COMPONENTS.PLAYER.FULLSCREEN') }
+                                onClick={ () => onAction('fullscreen') }
+                                setControls={ setControls }
+                                focusKey={ 'fullscreen' }
+                            />
+                    }
+                    <Control
+                        icon={ <FaSignInAlt/> }
+                        text={ t('COMPONENTS.PLAYER.EXIT') }
+                        onClick={ () => onAction('close') }
+                        setControls={ setControls }
+                        focusKey={ 'close' }
+                    />
+                </div>
             </div>
         </div>
     </FocusContext.Provider>);
@@ -167,11 +206,13 @@ const Player = (props) => {
     const [ isStream, setIsStream ] = useState(props.url.includes('m3u'));
     const [ windowLoaded, setWindowLoaded ] = useState(false);
     const [ playing, setPlaying ] = useState(isStream);
+    const [ muted, setMuted ] = useState(false);
     const [ progress, setProgress ] = useState(null);
     const [ duration, setDuration ] = useState(null);
     const [ conversor, setConversor ] = useState(false);
     const [ conversorSeekTo, setConversorSeekTo ] = useState(0);
     const playerRef = createRef();
+    const handleFullscreen = useFullScreenHandle();
 
     const handleControlAction = (action) => {
         let newSeconds = 0;
@@ -181,6 +222,18 @@ const Player = (props) => {
                 return;
             case 'pause':
                 setPlaying(false);
+                return;
+            case 'mute':
+                setMuted(true);
+                return;
+            case 'unmute':
+                setMuted(false);
+                return;
+            case 'fullscreen':
+                handleFullscreen.enter();
+                return;
+            case 'exit-fullscreen':
+                handleFullscreen.exit();
                 return;
             case 'close':
                 if(props.onClose) {
@@ -228,27 +281,32 @@ const Player = (props) => {
     useEffect(() => {
         if(typeof window !== 'undefined') {
             (async () => {
+                const userAgent = window.navigator.userAgent.toLowerCase();
+                const isSafari = userAgent.indexOf('safari') !== -1;
+                const isChrome = userAgent.indexOf('chrome') !== -1;
+
                 try {
                     if(API_URL) {
                         const res = await fetch(props.url);
                         const contentType = res.headers.get('content-type');
 
-                        if(!contentType.includes('video') && !isStream)
-                        setIsStream(true);
-
-                        if(contentType.toLowerCase().includes('x-msvideo')) {
-                            try {
-                                const metadataRes = await fetch(`${API_URL}/metadata?url=${ encodeURIComponent(props.url) }`);
-                                const metadata = await metadataRes.json();
-                                setDuration(metadata.format.duration);
-                                setConversor(true);
+                        if(!contentType.includes('video') && !isStream) setIsStream(true);
+                        else if(contentType.includes('video')) {
+                            if((!isChrome && !contentType.toLowerCase().includes('mp4')) || contentType.toLowerCase().includes('x-msvideo')) {
+                                try {
+                                    const metadataRes = await fetch(`${API_URL}/metadata?url=${ encodeURIComponent(props.url) }`);
+                                    const metadata = await metadataRes.json();
+                                    setDuration(metadata.format.duration);
+                                    setConversor(true);
+                                }
+                                catch(e) { }
                             }
-                            catch(e) { }
                         }
                     }
                 }
                 catch(e) { }
                 finally {
+                    if(isSafari) setMuted(true);
                     setWindowLoaded(true);
                     loader(true, { opacity: 0.1 });
                 }
@@ -303,20 +361,16 @@ const Player = (props) => {
     }, [playerRef, props.playedSeconds, duration]);
 
     if(!windowLoaded)
-    return (
-        <div className="d-flex align-items-center justify-content-center" style={{ backgroundColor: '#353535', width: '100vw', height: '100vh' }}>
-            <Oval width={ 90 } height={ 90 } color='#c4c4c4' secondaryColor='#454545'/>
-        </div>
-    );
+    return <div className="d-flex align-items-center justify-content-center" style={{ backgroundColor: '#353535', width: '100vw', height: '100vh' }}/>;
 
     let videoUrl = conversor ? `${ API_URL }/convert?url=${ encodeURIComponent(props.url) }` : props.url;
     if(conversor && conversorSeekTo > 0)
     videoUrl += `&seekTo=${ conversorSeekTo }`;
     
-    return (
+    return (<FullScreen handle={ handleFullscreen }>
         <div className={ styles.container } style={{ width: props.width, height: props.height }}>
             <PlayerControls
-                playerProps={ { playing: playing, ...props } }
+                playerProps={ { playing: playing, muted: muted, fullScreen: handleFullscreen.active, ...props } }
                 onAction={ handleControlAction }    
                 isStream={ isStream }
                 duration={ duration }
@@ -331,6 +385,8 @@ const Player = (props) => {
                 height={ props.height }
                 controls={ false }
                 playing={ playing }
+                playsinline={ true }
+                muted={ muted }
                 config={{
                     file: {
                         forceHLS: isStream,
@@ -369,7 +425,7 @@ const Player = (props) => {
                 }
             />
         </div>
-    );
+    </FullScreen>);
 };
 
 export default Player;

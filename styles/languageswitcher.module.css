@@ -16,3 +16,14 @@
 .container:hover > span {
     border-bottom: 2px solid whitesmoke;
 }
+
+.languageText {
+    margin-right: 10px;
+}
+
+/* For mobile devices */
+@media screen and (max-width: 600px) {
+    .languageText {
+        display: none;
+    }
+}

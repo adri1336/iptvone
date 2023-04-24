@@ -15,7 +15,6 @@ import { toast } from 'react-toastify';
 import LanguageSwitcher from "@/components/languageswitcher";
 import { useRouter } from 'next/router';
 import ItemList from "@/components/itemlist";
-import { Oval } from "react-loader-spinner";
 
 export default () => {
     const router = useRouter();
@@ -140,11 +139,7 @@ export default () => {
     };
     
     if(!IPTVLoaded)
-    return (
-        <div className="d-flex align-items-center justify-content-center" style={{ backgroundColor: '#353535', width: '100vw', height: '100vh' }}>
-            <Oval width={ 90 } height={ 90 } color='#c4c4c4' secondaryColor='#454545'/>
-        </div>
-    );
+    return <div className="d-flex align-items-center justify-content-center" style={{ backgroundColor: '#353535', width: '100vw', height: '100vh' }}/>;
 
     return (<FocusContext.Provider value={ focusKey }>
         {
@@ -432,7 +427,7 @@ const StartPage = ({ playItem, onPlay }) => {
             <div className="d-flex flex-column" style={{ marginTop: 80 }}>
                 <div className="d-flex flex-column m-30">
                     <span className="text-medium fw-bold">{ t('COMMON.INFO') }</span>
-                    <span className="text-small">{ t('PAGES.LIBRARY.INFO', { items: IPTV.getItems().length, groups: IPTV.getGroups().length, url: IPTV.getURL() }) }</span>
+                    <span className="text-small text-truncate">{ t('PAGES.LIBRARY.INFO', { items: IPTV.getItems().length, groups: IPTV.getGroups().length, url: IPTV.getURL() }) }</span>
                     <Button focusKey={ 'change_url' } onFocus={ () => setLastFocused('change_url') } type="button" className="dark-button" onClick={ () => Router.replace('/?change=true') }>{ t('PAGES.LIBRARY.CHANGE_URL') }</Button>
                     <div className='languageSwitcherContainer'>
                         <LanguageSwitcher/>

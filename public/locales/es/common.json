@@ -10,7 +10,10 @@
             "REPLAY": "Reiniciar",
             "PAUSE": "Pausar",
             "EXIT": "Salir",
-            "USING_CONVERSOR": "Transcodificando en tiempo real (puede ser inestable)"
+            "MUTE": "Silenciar",
+            "UNMUTE": "Sonido",
+            "FULLSCREEN": "Completa",
+            "EXIT_FULLSCREEN": "Normal"
         },
         "SIDEBAR": {
             "START": "Inicio"
