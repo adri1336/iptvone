@@ -56,14 +56,14 @@ const Item = ({ item, onSelected, focusKey, onFocus, renderTheImage = true }) =>
     
     if(!renderImage) {
         return (<div ref={ viewRef }>
-            <div ref={ ref } className={ styles.itemContainer + " d-flex flex-column justify-content-center align-items-center" + (focused ? " " + styles.itemfocused : "") } onClick={ () => onSelected() }>
+            <div ref={ ref } className={ styles.itemContainer + " d-flex flex-column justify-content-center align-items-center" + (focused ? " " + styles.itemfocused : "") } onClick={ () => onSelected() } onAuxClick={ () => onSelected(true) }>
                 <span className="text-medium text-center">{ item.name }</span>
             </div>
         </div>);
     }
     else {
         return (<div ref={ viewRef }>
-            <div ref={ ref } className={ styles.itemContainer + " d-flex flex-column justify-content-center align-items-center" + (focused ? " " + styles.itemfocused : "") } onClick={ () => onSelected() }>
+            <div ref={ ref } className={ styles.itemContainer + " d-flex flex-column justify-content-center align-items-center" + (focused ? " " + styles.itemfocused : "") } onClick={ () => onSelected() } onAuxClick={ () => onSelected(true) }>
                 <img src={ renderImage } alt="logo" className={ styles.itemCoverLogo } loading="lazy"/>
                 <div className={ styles.itemCoverTitle }>
                     <span className="text-small text-center">{ item.name }</span>
