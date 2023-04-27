@@ -422,6 +422,12 @@ const StartPage = ({ playItem, onPlay }) => {
         }
     };
 
+    const deleteItemFromLastItems = item => {
+        const tmpLastItems = lastItems.filter(i => i.name !== item.name);
+        setLastItems(tmpLastItems);
+        localStorage.setItem('LAST_ITEMS', JSON.stringify(tmpLastItems));
+    };
+
     return (
         <div ref={ ref } className="mpage">
             <div className="d-flex flex-column" style={{ marginTop: 80 }}>
@@ -450,7 +456,10 @@ const StartPage = ({ playItem, onPlay }) => {
                                     return <Item
                                         key={ index }
                                         item={ item }
-                                        onSelected={ () => onPlay(item) }
+                                        onSelected={ (long) => {
+                                            if(long) deleteItemFromLastItems(item);
+                                            else onPlay(item);
+                                        } }
                                         focusKey={ 'last_item_' + index }
                                         onFocus={ () => setLastFocused('last_item_' + index) }
                                     />

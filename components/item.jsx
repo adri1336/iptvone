@@ -6,9 +6,22 @@ import { useInView } from "react-intersection-observer";
 const Item = ({ item, onSelected, focusKey, onFocus, renderTheImage = true }) => {
     const { ref: viewRef, inView, entry } = useInView({});
 
+    const [ lastPress, setLastPress ] = useState(0);
+    const [ enterPressed, setEnterPressed ] = useState(false);
     const [ renderImage, setRenderImage ] = useState(null);
     const { ref, focused } = useFocusable({
-        onEnterPress: () => onSelected(),
+        onEnterPress: () => {
+            if(!enterPressed) {
+                setLastPress(Date.now())
+                setEnterPressed(true);
+            }
+        },
+        
+        onEnterRelease: () => {
+            if(Date.now() - lastPress > 1000) onSelected(true);
+            else onSelected();
+            setEnterPressed(false);
+        },
         onFocus: () => {
             if(onFocus)
             onFocus();
