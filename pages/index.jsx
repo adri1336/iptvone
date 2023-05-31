@@ -140,7 +140,10 @@ export default () => {
 						<Button type="submit" className="dark-button">{ t('COMMON.CONTINUE') }</Button>
 					</div>
 				</form>
-				<Keyboard forRef={ activeRef } onFocus={ () => setKeyboardFocused(true) } onBlur={ () => setKeyboardFocused(false) }/>
+				<Keyboard forRef={ activeRef } onFocus={ () => setKeyboardFocused(true) } onBlur={ () => setKeyboardFocused(false) } onKeyPressed={ () => {
+					const currentValue = activeRef.current.value;
+					setInputUrlValue(currentValue);
+				}}/>
 			</div>
 		</div>
 	</FocusContext.Provider>);
