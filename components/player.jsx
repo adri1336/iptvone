@@ -205,6 +205,7 @@ const Player = (props) => {
     const API_URL = process.env.API_URL; //for converter
     const [ isStream, setIsStream ] = useState(props.url.includes('m3u'));
     const [ windowLoaded, setWindowLoaded ] = useState(false);
+    const [ videoLoaded, setVideoLoaded ] = useState(false);
     const [ playing, setPlaying ] = useState(isStream);
     const [ muted, setMuted ] = useState(false);
     const [ progress, setProgress ] = useState(null);
@@ -281,8 +282,23 @@ const Player = (props) => {
     useEffect(() => {
         if(typeof window !== 'undefined') {
             (async () => {
+                const browser = (function() {
+                    var test = function(regexp) {return regexp.test(window.navigator.userAgent)}
+                    switch (true) {
+                        case test(/edg/i): return "Microsoft Edge";
+                        case test(/trident/i): return "Microsoft Internet Explorer";
+                        case test(/firefox|fxios/i): return "Mozilla Firefox";
+                        case test(/opr\//i): return "Opera";
+                        case test(/ucbrowser/i): return "UC Browser";
+                        case test(/samsungbrowser/i): return "Samsung Browser";
+                        case test(/chrome|chromium|crios/i): return "Google Chrome";
+                        case test(/safari/i): return "Apple Safari";
+                        default: return "Other";
+                    }
+                })();
+
                 const userAgent = window.navigator.userAgent.toLowerCase();
-                const isSafari = userAgent.indexOf('safari') !== -1;
+                const isSafari = browser === 'Apple Safari';
                 const isChrome = userAgent.indexOf('chrome') !== -1;
 
                 try {
@@ -416,7 +432,15 @@ const Player = (props) => {
                     setDuration(duration);
                 } }
                 onBuffer={ () => loader(true, { opacity: 0.1 }) }
-                onBufferEnd={ () => loader(false) }
+                onBufferEnd={
+                    () => {
+                        if(!videoLoaded) {
+                            setVideoLoaded(true);
+                            handleFullscreen.enter();
+                        }
+                        loader(false);
+                    }
+                }
                 onError={
                     (error) => {
                         loader(false);
