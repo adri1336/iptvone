@@ -1,4 +1,4 @@
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'react-i18next';
 import styles from "@/styles/keyboard.module.css";
 import { useState, useEffect } from 'react';
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
@@ -67,7 +67,7 @@ const Keyboard = ({ forRef = null, onKeyPressed, onFocus, onBlur }) => {
     const [ uppercase, setUppercase ] = useState(false);
     const [ specialCharacters, setSpecialCharacters ] = useState(false);
     const [ keys, setKeys ] = useState(normalKeys);
-    const { t } = useTranslation('common');
+    const { t } = useTranslation();
 
     useEffect(() => {
         if(forRef?.current) {

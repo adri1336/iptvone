@@ -3,13 +3,13 @@ import ENV from "@/utils/env";
 import IPTV from "@/utils/iptv";
 import GroupItem from "./groupitem";
 import { useEffect, useState } from "react";
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'react-i18next';
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
 
 const Sidebar = ({ onGroupSelected, selectedIndex = -1 }) => {
     const [ lastFocused, setLastFocused ] = useState('group_start');
     const [ selectedGroupIndex, setSelectedGroupIndex ] = useState(selectedIndex);
-    const { t } = useTranslation('common');
+    const { t } = useTranslation();
     const { ref, focusKey, focusSelf, setFocus, getCurrentFocusKey } = useFocusable({
         onFocus: () => {
             if(getCurrentFocusKey() !== lastFocused) {

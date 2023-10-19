@@ -1,12 +1,12 @@
 import Keyboard from "@/components/keyboard";
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
 import { useEffect, useState } from "react";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import '@/utils/i18n';
 import ENV from "@/utils/env";
 import { useRef } from "react";
 import Input from "@/components/input";
 import Button from "@/components/button";
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'react-i18next';
 import { loader } from "@/components/loader/loader";
 import { toast } from 'react-toastify';
 import parser from "iptv-playlist-parser";
@@ -17,7 +17,7 @@ import LanguageSwitcher from "@/components/languageswitcher";
 
 export default () => {
 	const router = useRouter();
-	const { t } = useTranslation('common');
+	const { t, i18n } = useTranslation();
 	const { focusKey, setFocus, focusSelf } = useFocusable({});
 
 	const [ pageLoaded, setPageLoaded ] = useState(false);
@@ -27,13 +27,13 @@ export default () => {
 	const inputUrlRef = useRef(null);
 
 	useEffect(() => {
-		if(typeof window !== 'undefined') {
+		if(typeof window !== 'undefined' && typeof i18n.changeLanguage === 'function') {
 			loader(true, { message: t('PAGES.M3U.LOAD_MESSAGE'), opacity: 1.0, logo: true });
 
 			const lang = localStorage.getItem('LANGUAGE');
-			if(lang) router.push(router.asPath, router.asPath, { locale: lang });
+			if(lang) i18n.changeLanguage(lang);
 		}
-	}, []);
+	}, [i18n]);
 
 	useEffect(() => {
 		if(router.isReady && typeof window !== 'undefined') {
@@ -147,12 +147,4 @@ export default () => {
 			</div>
 		</div>
 	</FocusContext.Provider>);
-}
-
-export async function getStaticProps({ locale }) {
-	return {
-		props: {
-			...(await serverSideTranslations(locale, ['common']))
-		}
-	};
 }

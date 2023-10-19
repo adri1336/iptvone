@@ -1,8 +1,7 @@
 import Sidebar from "@/components/sidebar/sidebar";
 import IPTV from "@/utils/iptv";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useEffect, useRef, useState } from "react";
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'react-i18next';
 import Item from "@/components/item";
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
 import Router from "next/router";
@@ -13,11 +12,10 @@ import Button from "@/components/button";
 import FlatList from "flatlist-react";
 import { toast } from 'react-toastify';
 import LanguageSwitcher from "@/components/languageswitcher";
-import { useRouter } from 'next/router';
 import ItemList from "@/components/itemlist";
 
 export default () => {
-    const router = useRouter();
+    const { i18n } = useTranslation();
     const [ IPTVLoaded, setIPTVLoaded ] = useState(false);
     const { focusKey, focusSelf, setFocus, getCurrentFocusKey } = useFocusable({});
     const [ lastFocused, setLastFocused ] = useState(null);
@@ -28,11 +26,11 @@ export default () => {
     const [ playedSeconds, setPlayedSeconds ] = useState(0);
     
     useEffect(() => {
-        if(typeof window !== 'undefined') {
+        if(typeof window !== 'undefined' && typeof i18n.changeLanguage === 'function') {
 			const lang = localStorage.getItem('LANGUAGE');
-			if(lang) router.push(router.asPath, router.asPath, { locale: lang });
+			if(lang) i18n.changeLanguage(lang);
 		}
-    }, []);
+    }, [i18n]);
 
     useEffect(() => {
         if(typeof window !== 'undefined' && !collection && !playItem && selectedGroupIndex > -1) {
@@ -211,7 +209,7 @@ export default () => {
 };
 
 const CollectionPage = ({ collection, onBack, playItem, onPlay }) => {
-    const { t } = useTranslation('common');
+    const { t } = useTranslation();
     const [ currentItem, setCurrentItem ] = useState(null);
     const { ref, focusSelf, setFocus } = useFocusable({
         isFocusBoundary: true
@@ -324,7 +322,7 @@ const CollectionPage = ({ collection, onBack, playItem, onPlay }) => {
 };
 
 const StartPage = ({ playItem, onPlay }) => {
-    const { t } = useTranslation('common');
+    const { t } = useTranslation();
     const [ lastFocused, setLastFocused ] = useState('change_url');
     const { ref, setFocus, getCurrentFocusKey } = useFocusable({
         onFocus: () => {
@@ -596,11 +594,3 @@ const GroupPage = ({ selectedGroupIndex, onPlay }) => {
         </div>
     );
 };
-
-export async function getStaticProps({ locale }) {
-	return {
-		props: {
-			...(await serverSideTranslations(locale, ['common']))
-		}
-	};
-}

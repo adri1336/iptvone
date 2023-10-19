@@ -1,14 +1,17 @@
-import { useRouter } from "next/router";
 import styles from '@/styles/languageswitcher.module.css';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'react-i18next';
 import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
 
 const LanguageSwitcher = () => {
+    const { t, i18n } = useTranslation();
+    const languages = Object.keys(i18n.services.resourceStore.data);
+    const currentLanguage = i18n.language;
+
     const switchLanguage = () => {
-        const currentLanguageIndex = languages.indexOf(router.locale);
-        const nextLanguageIndex = currentLanguageIndex + 1 >= languages.length ? 0 : currentLanguageIndex + 1;
-        const nextLanguage = languages[nextLanguageIndex];
-        router.push(router.asPath, router.asPath, { locale: nextLanguage });
+        const currentLanguageIndex = languages.indexOf(currentLanguage);
+        const nextLanguage = languages[currentLanguageIndex + 1] || languages[0];
+        i18n.changeLanguage(nextLanguage);
+
         if(typeof window !== 'undefined')
         localStorage.setItem('LANGUAGE', nextLanguage);
     };
@@ -16,11 +19,6 @@ const LanguageSwitcher = () => {
     const { ref, focused } = useFocusable({
         onEnterPress: () => switchLanguage()
     });
-
-    const { t } = useTranslation('common');
-    const router = useRouter();
-    const languages = router.locales;
-    const currentLanguage = router.locale.toUpperCase();
 
     if(languages.length <= 1) return (<></>);
     return (<div ref={ ref } className={ styles.container + " d-flex align-items-center justify-content-center" + " " + (focused ? styles.containerFocused : "") } onClick={ () => switchLanguage() }>

@@ -4,7 +4,7 @@ import styles from "@/styles/player.module.css";
 import { FaPlay, FaPause, FaRedoAlt, FaSignInAlt } from "react-icons/fa";
 import { GoMute, GoUnmute } from "react-icons/go";
 import { MdFullscreenExit, MdFullscreen } from "react-icons/md";
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'react-i18next';
 import { useFocusable, FocusContext } from "@noriginmedia/norigin-spatial-navigation";
 import { loader } from "@/components/loader/loader";
 import { toast } from 'react-toastify';
@@ -44,7 +44,7 @@ const PlayerControls = ({ playerProps, onAction, isStream, conversor, duration, 
         }
     }, [controls]);
 
-    const { t } = useTranslation('common');
+    const { t } = useTranslation();
     const { ref, focusKey, focusSelf, setFocus } = useFocusable({
         onFocus: () => {
             setControls(control => control + 1);
